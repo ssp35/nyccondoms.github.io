@@ -1,0 +1,30 @@
+---
+title: "Proposal"
+author: "Malvika, Amy, Dani and Saryu "
+date: "11/12/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The group members (names and UNIs)
+Malvika Venkataraman (msv1237)
+Amy Liu (fl2569)
+Dani Rochez (dr3168)
+Saryu Patel (sp4029)
+
+# Tentative project title
+Availability of Free Condoms in NYC
+
+# Motivation
+The motivation for this project is to explore the distribution of free condoms across on different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain organizations have made more of an effort to distribute free condoms than others.
+
+# Intended final products
+
+
+
+The anticipated data sources
+The planned analyses / visualizations / coding challenges
+The planned timeline
