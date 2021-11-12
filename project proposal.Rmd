@@ -22,9 +22,16 @@ Availability of Free Condoms in NYC
 The motivation for this project is to explore the distribution of free condoms across on different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain organizations have made more of an effort to distribute free condoms than others.
 
 # Intended final products
+A website with a report on our findings, complete with visualizations and interactive maps.
+
+# Anticipated data source
+The "NYC Condom Availability Program - HIV condom distribution locations" dataset from NYC Open Data. The dataset includes a list of over 325 venues, across the five boroughs that actively distribute free safer sex products.
+
+# The planned analyses / visualizations / coding challenges
 
 
 
-The anticipated data sources
-The planned analyses / visualizations / coding challenges
+
+
+
 The planned timeline
