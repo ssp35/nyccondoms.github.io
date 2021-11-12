@@ -28,10 +28,15 @@ A website with a report on our findings, complete with visualizations and intera
 The "NYC Condom Availability Program - HIV condom distribution locations" dataset from NYC Open Data. The dataset includes a list of over 325 venues, across the five boroughs that actively distribute free safer sex products.
 
 # The planned analyses / visualizations / coding challenges
+Our plan is to read in the data, clean it, manipulate it, summary statistics, EDA, answer the main questions of our analysis, explore new questions that come up, create interactive maps, and other interactive visualizations.
 
+Some of the example questions we want to examine are: 
+* How do the number of venues vary per borough?
+* How does the availability of products for females and males vary per venue?
+* How does the availability of products for females and males vary per borough?
+* What is the breakdown of condom distribution per organization type?
+* What is the most popular venue type to distribute condoms?
 
+A challenge we might encounter is that if want to explore questions related to the day of the week, it will be difficult because there is a lot of missing data in the variables on each day of the week. Another challenge is related to collaborative coding. We all have different coding styles and will have to communicate on our naming conventions and approach.
 
-
-
-
-The planned timeline
+# Planned timeline
