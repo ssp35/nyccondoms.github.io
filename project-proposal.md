@@ -20,10 +20,10 @@ Availability of Free Condoms in NYC
 ### Motivation
 
 The motivation for this project is to explore the distribution of free
-condoms across on different areas in NYC. We want to determine areas of
-the city where more free condoms can be distributed, and ensure that
-equal amounts are being distributed for both females and males. We also
-would like to explore whether certain organizations have made more of an
+condoms across different areas in NYC. We want to determine areas of the
+city where more free condoms can be distributed, and ensure that equal
+amounts are being distributed for both females and males. We also would
+like to explore whether certain organizations have made more of an
 effort to distribute free condoms than others.
 
 ### Intended final products
@@ -40,10 +40,10 @@ safer sex products.
 
 ### The planned analyses / visualizations / coding challenges
 
-Our plan is to read in the data, clean it, manipulate it, summary
-statistics, EDA, answer the main questions of our analysis, explore new
-questions that come up, create interactive maps, and other interactive
-visualizations.
+Our plan is to read in the data, clean it, manipulate it, create summary
+statistics, do exploratory data analysis, answer the main questions of
+our analysis, explore new questions that come up, create interactive
+maps, and other interactive visualizations.
 
 Some of the example questions we want to examine are:
 
