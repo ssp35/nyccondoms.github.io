@@ -4,3 +4,6 @@ author: "Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez"
 output: html_document
 ---
 
+## Motivation
+
+## Contents of this Website
