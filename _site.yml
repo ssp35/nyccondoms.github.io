@@ -5,3 +5,7 @@ navbar:
   right:
     - icon: fa-github fa-lg
       href: https://github.com/ssp35/p8105_final_group_project.git
+output:
+  html_document:
+    cold_folding: hide
+    theme: darkly
