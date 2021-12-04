@@ -1,6 +1,5 @@
 ---
 title: "NYC Condom Distribution"
-author: "Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez"
 output: html_document
 ---
 
