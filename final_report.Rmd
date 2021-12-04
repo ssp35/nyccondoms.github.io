@@ -4,3 +4,14 @@ author: "Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez"
 output: html_document
 ---
 
+# NYC Condom Distribution
+
+## Motivation
+
+## Initial Questions
+
+## Data
+
+## Explorartory Analysis
+
+## Discussion and Conclusions
