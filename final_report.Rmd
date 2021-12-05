@@ -1,16 +1,89 @@
 ---
 title: "Final Report"
-author: "Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez"
-output: html_document
+author: "Saryu Patel, Malvika Venkatraman, Fang(Amy) Liu, Dani Rochez"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
 ---
+
+Load required libraries and setup.
+```{r, message=FALSE}
+library(tidyverse)
+library(rvest)
+library(httr)
+
+knitr::opts_chunk$set(
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
 
 # NYC Condom Distribution
 
+
 ## Motivation
+
 
 ## Initial Questions
 
-## Data
+
+## Data  
+For our final project, we will be using data from the NYC condom availability program. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products.The dataset can be downloaded directly or accessed by using NYC OpenData's API, in `JSON` or `CSV` formats. For our project, we will access the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data are updated regularly.  
+
+Link for data: [NYC Condom Availability Program - HIV condom distribution locations](www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh) 
+
+### Variables of interest
+**Facility**  
+* `facility_pk` - unique facility identifier  
+* `facilityname` - name of the facility  
+* `partnertype` - the type or organization the venue is  
+* `partner_subtype`  
+* `phone`  
+
+**Location**  
+* `address` - address of the service location  
+* `borough` - the borough the facility/venue is located in  
+* `zipcode`   
+* `latitude`  
+* `longitude`  
+
+**Safer sex products availability**  
+* `condoms_male` - whether the location offers condoms for males (1 = yes, 0 = no)  
+* `condoms_female` - whether the location offers female/insertive condoms  
+* `lubricant` - whether the location offers lubricant 
+
+### Data Cleaning  
+```{r, message=FALSE, }
+condom_data = 
+  GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
+  content("parsed")
+
+cleaned_data = 
+  condom_data %>% 
+  select(facility_pk, facilityname, partnertype, partner_type_detailed, address, borough, zipcode, latitude, longitude, phone, condoms_male, fc2_female_insertive_condoms, lubricant) %>% 
+  rename(condoms_female = fc2_female_insertive_condoms) %>% 
+  rename(partner_subtype = partner_type_detailed) %>% 
+  mutate(
+    condoms_male = as.factor(condoms_male), 
+    condoms_male = fct_recode(condoms_male, "0" = "FALSE", "1" = "TRUE"),
+    condoms_female = as.factor(condoms_female),
+    condoms_female = fct_recode(condoms_female, "0" = "FALSE", "1" = "TRUE"),
+    lubricant = as.factor(lubricant),
+    lubricant = fct_recode(lubricant, "0" = "FALSE", "1" = "TRUE"),
+    borough = as.factor(borough)
+  )
+```  
+First, we'll import the data set as a CSV and parse it. The variables of interest were then selected and renamed. The `servicetype` and `service_category` variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as `council_district`, `census_tract`, `bin`, `bbl`, and `nta` were dropped because they are irrelevant to our key research questions. After finalizing and renaming some our variables for convenience, we converted  `condoms_male`, `condoms_female`, `lubricant`, and `borough` into factors and reordered the levels to facilitate data processing and manipulation in later steps. As a result of the cleaning steps above, our final data contains **`r nrow(cleaned_data)`** rows and **`r ncol(cleaned_data)`** columns. 
 
 ## Explorartory Analysis
 

@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez" />
+<meta name="author" content="Saryu Patel, Malvika Venkatraman, Fang(Amy) Liu, Dani Rochez" />
 
 
 <title>Final Report</title>
@@ -17,7 +17,7 @@
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/darkly.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,7 +30,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -218,7 +222,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -228,6 +298,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -263,14 +343,39 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Final Report</h1>
-<h4 class="author">Saryu Patel, Malvika Venkatraman, Amy Liu, Dani Rochez</h4>
+<h4 class="author">Saryu Patel, Malvika Venkatraman, Fang(Amy) Liu, Dani Rochez</h4>
 
 </div>
 
 
+<p>Load required libraries and setup.</p>
+<pre class="r"><code>library(tidyverse)
+library(rvest)
+library(httr)
+
+knitr::opts_chunk$set(
+  out.width = &quot;90%&quot;
+)
+
+theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
+options(
+  ggplot2.continuous.colour = &quot;viridis&quot;,
+  ggplot2.continuous.fill = &quot;viridis&quot;
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <div id="nyc-condom-distribution" class="section level1">
 <h1>NYC Condom Distribution</h1>
 <div id="motivation" class="section level2">
@@ -281,6 +386,49 @@ $(document).ready(function () {
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
+<p>For our final project, we will be using data from the NYC condom availability program. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products.The dataset can be downloaded directly or accessed by using NYC OpenData’s API, in <code>JSON</code> or <code>CSV</code> formats. For our project, we will access the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data are updated regularly.</p>
+<p>Link for data: <a href="www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh">NYC Condom Availability Program - HIV condom distribution locations</a></p>
+<div id="variables-of-interest" class="section level3">
+<h3>Variables of interest</h3>
+<p><strong>Facility</strong><br />
+* <code>facility_pk</code> - unique facility identifier<br />
+* <code>facilityname</code> - name of the facility<br />
+* <code>partnertype</code> - the type or organization the venue is<br />
+* <code>partner_subtype</code><br />
+* <code>phone</code></p>
+<p><strong>Location</strong><br />
+* <code>address</code> - address of the service location<br />
+* <code>borough</code> - the borough the facility/venue is located in<br />
+* <code>zipcode</code><br />
+* <code>latitude</code><br />
+* <code>longitude</code></p>
+<p><strong>Safer sex products availability</strong><br />
+* <code>condoms_male</code> - whether the location offers condoms for males (1 = yes, 0 = no)<br />
+* <code>condoms_female</code> - whether the location offers female/insertive condoms<br />
+* <code>lubricant</code> - whether the location offers lubricant</p>
+</div>
+<div id="data-cleaning" class="section level3">
+<h3>Data Cleaning</h3>
+<pre class="r"><code>condom_data = 
+  GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
+  content(&quot;parsed&quot;)
+
+cleaned_data = 
+  condom_data %&gt;% 
+  select(facility_pk, facilityname, partnertype, partner_type_detailed, address, borough, zipcode, latitude, longitude, phone, condoms_male, fc2_female_insertive_condoms, lubricant) %&gt;% 
+  rename(condoms_female = fc2_female_insertive_condoms) %&gt;% 
+  rename(partner_subtype = partner_type_detailed) %&gt;% 
+  mutate(
+    condoms_male = as.factor(condoms_male), 
+    condoms_male = fct_recode(condoms_male, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    condoms_female = as.factor(condoms_female),
+    condoms_female = fct_recode(condoms_female, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    lubricant = as.factor(lubricant),
+    lubricant = fct_recode(lubricant, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    borough = as.factor(borough)
+  )</code></pre>
+<p>First, we’ll import the data set as a CSV and parse it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. As a result of the cleaning steps above, our final data contains <strong>662</strong> rows and <strong>13</strong> columns.</p>
+</div>
 </div>
 <div id="explorartory-analysis" class="section level2">
 <h2>Explorartory Analysis</h2>
@@ -292,6 +440,8 @@ $(document).ready(function () {
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -323,7 +473,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

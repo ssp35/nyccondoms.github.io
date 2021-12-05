@@ -10,4 +10,4 @@ navbar:
 output:
   html_document:
     cold_folding: hide
-    theme: darkly
+    theme: flatly
