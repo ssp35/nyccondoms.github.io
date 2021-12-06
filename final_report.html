@@ -438,8 +438,11 @@ cleaned_data =
     lubricant = as.factor(lubricant),
     lubricant = fct_recode(lubricant, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
     borough = as.factor(borough)
-  )</code></pre>
-<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. As a result of the cleaning steps above, our final data contains <strong>663</strong> rows and <strong>13</strong> columns.</p>
+  )
+
+cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
+  &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
+<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hypen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>663</strong> rows and <strong>13</strong> columns.</p>
 </div>
 </div>
 <div id="explorartory-analysis" class="section level2">
