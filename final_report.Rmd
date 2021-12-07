@@ -1,6 +1,6 @@
 ---
 title: "Final Report"
-author: "Saryu Patel, Malvika Venkatraman, Fang(Amy) Liu, Dani Rochez"
+author: "Saryu Patel, Malvika Venkataraman, Fang (Amy) Liu, Dani Rochez"
 output:
   html_document:
     code_folding: hide
@@ -101,6 +101,6 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
 
 First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The `servicetype` and `service_category` variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as `council_district`, `census_tract`, `bin`, `bbl`, and `nta` were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted  `condoms_male`, `condoms_female`, `lubricant`, and `borough` into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that `partnertype` "Community-Based Organization/Non-Profit" was also recorded with a slightly different format (without a hypen between "Community" and "Based"), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains **`r nrow(cleaned_data)`** rows and **`r ncol(cleaned_data)`** columns. 
 
-## Explorartory Analysis
+## Exploratory Analysis
 
 ## Discussion and Conclusions
