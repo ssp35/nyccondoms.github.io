@@ -1,0 +1,134 @@
+---
+title: "Popular Venues"
+output: html_document
+---
+
+```{r setup, message=FALSE}
+library(tidyverse)
+library(rvest)
+library(httr)
+library(plotly)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = 0.6,
+  out.width = "90%"
+)
+theme_set(theme_minimal())
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r}
+condom_data = 
+  GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
+  content("parsed")
+
+cleaned_data = 
+  condom_data %>% 
+  select(facility_pk, facilityname, partnertype, partner_type_detailed, address, borough, zipcode, latitude, longitude, phone, condoms_male, fc2_female_insertive_condoms, lubricant) %>% 
+  rename(condoms_female = fc2_female_insertive_condoms) %>% 
+  rename(partner_subtype = partner_type_detailed) %>% 
+  mutate(
+    condoms_male = as.factor(condoms_male), 
+    condoms_male = fct_recode(condoms_male, "0" = "FALSE", "1" = "TRUE"),
+    condoms_female = as.factor(condoms_female),
+    condoms_female = fct_recode(condoms_female, "0" = "FALSE", "1" = "TRUE"),
+    lubricant = as.factor(lubricant),
+    lubricant = fct_recode(lubricant, "0" = "FALSE", "1" = "TRUE"),
+    borough = as.factor(borough)
+  )
+
+cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organization/Non-Profit"] =
+  "Community-Based Organization/Non-Profit"
+```
+
+Question: What is the most popular venue type/subtype to distribute condoms?
+
+Venue:
+
+```{r}
+pop_venue =
+  cleaned_data %>% 
+  group_by(partnertype) %>% 
+  summarize(total_n = n()) %>% 
+  arrange(desc(total_n))
+
+pop_venue %>% 
+  knitr::kable()
+```
+
+Top 5 types
+
+```{r}
+pop_venue %>% 
+  head(5) %>% 
+  mutate(partnertype = fct_reorder(partnertype, total_n, .desc = TRUE)) %>% 
+  ggplot(aes(x = partnertype, y = total_n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(title = "Most Popular Venue Types")
+```
+
+Venue subtype:
+
+Top 10 subtypes
+```{r}
+pop_subtype =
+  cleaned_data %>% 
+  group_by(partner_subtype) %>% 
+  summarize(total_n = n()) %>% 
+  arrange(desc(total_n)) %>% 
+  head(10)
+
+pop_subtype %>% 
+  knitr::kable()
+```
+
+```{r}
+pop_subtype %>% 
+  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
+  ggplot(aes(x = partner_subtype, y = total_n)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+  labs(title = "Most Popular Venue Subtypes")
+```
+
+Most popular venue subtype within each venue type
+
+```{r}
+pop_subtype_per_venue =
+  cleaned_data %>% 
+  group_by(partnertype, partner_subtype) %>% 
+  summarize(total_n = n()) %>% 
+  top_n(3) %>% 
+  ungroup() %>% 
+  arrange(partnertype, desc(total_n)) %>% 
+  filter(total_n > 1)
+
+pop_subtype_per_venue %>% 
+  knitr::kable()
+```
+
+
+
+```{r}
+pop_subtype_per_venue %>% 
+  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
+  ggplot(aes(x = partnertype, y = total_n, fill = partner_subtype)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1)) 
+```
+
+```{r}
+pop_subtype_per_venue %>% 
+  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
+  plot_ly(x = ~partnertype, y = ~total_n)
+```
+
