@@ -1,0 +1,106 @@
+---
+title: "final project"
+author: "Daniela Rochez"
+date: "12/6/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(httr)
+```
+
+```{r}
+knitr::opts_chunk$set(
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r}
+condom_data = 
+  GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
+  content("parsed")
+cleaned_data = 
+  condom_data %>% 
+  select(facility_pk, facilityname, partnertype, partner_type_detailed, 
+         address, borough, zipcode, latitude, longitude, phone, condoms_male,
+         fc2_female_insertive_condoms, lubricant) %>% 
+  rename(condoms_female = fc2_female_insertive_condoms) %>% 
+  rename(partner_subtype = partner_type_detailed) %>% 
+  mutate(
+    condoms_male = as.factor(condoms_male), 
+    condoms_male = fct_recode(condoms_male, "0" = "FALSE", "1" = "TRUE"),
+    condoms_female = as.factor(condoms_female),
+    condoms_female = fct_recode(condoms_female, "0" = "FALSE", "1" = "TRUE"),
+    lubricant = as.factor(lubricant),
+    lubricant = fct_recode(lubricant, "0" = "FALSE", "1" = "TRUE"),
+    borough = as.factor(borough)
+  )
+
+cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organization/Non-Profit"] =
+  "Community-Based Organization/Non-Profit"
+
+```
+
+```{r}
+tidy_data_partnertype=
+  cleaned_data %>% 
+  pivot_longer(
+    condoms_male:condoms_female,
+    names_to = "type_of_condom",
+    values_to = "availability") %>%
+  filter(availability== 1) %>% 
+  group_by(partnertype, type_of_condom) %>% 
+  summarize(n_obs = n()) %>% 
+  ggplot(aes(x = partnertype, y = n_obs,
+             fill=type_of_condom))+
+  geom_bar(stat="identity", 
+                    position = position_dodge())+
+  labs(
+    title = 
+      "Count of Male and Female Condoms 
+       by Partner Type",
+    x = "Partner Type",
+    y = "Count")+
+  scale_fill_discrete(name = "Type of Condom", 
+                      labels = c("Female Condom",
+                                 "Male Condom"))+
+  coord_flip()
+```
+
+```{r}
+tidy_data_borough=
+  cleaned_data %>% 
+  pivot_longer(
+    condoms_male:condoms_female,
+    names_to = "type_of_condom",
+    values_to = "availability") %>%
+  filter(availability== 1) %>% 
+  group_by(borough, type_of_condom) %>% 
+  summarize(n_obs = n()) %>% 
+    ggplot(aes(x = borough, y = n_obs,
+             fill=type_of_condom))+
+  geom_bar(stat="identity", 
+                    position = position_dodge())+
+    labs(
+    title = 
+      "Count of Male and Female Condoms 
+       by Borough",
+    x = "Borough",
+    y = "Count")+
+  scale_fill_discrete(name = "Type of Condom", 
+                      labels = c("Female Condom",
+                                 "Male Condom"))+
+  coord_flip()
+```
+
