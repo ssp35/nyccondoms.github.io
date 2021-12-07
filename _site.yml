@@ -9,6 +9,7 @@ navbar:
     - text: "Exploratory Analysis"
       menu:
         - text: "Male and Female Condoms Availability"
+          href: female_male_condoms.html
         - text: "Venues per Borough"
         - text: "Popular Venues"
   right:

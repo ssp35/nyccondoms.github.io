@@ -5,4 +5,6 @@ output: html_document
 
 ## Motivation
 
+The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.
+
 ## Contents of this Website

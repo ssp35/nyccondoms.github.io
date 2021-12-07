@@ -102,4 +102,10 @@ First, we imported the dataset as a CSV and parsed it. The variables of interest
 
 ## Exploratory Analysis
 
+### Male and Female Condoms Availability
+
+### Venues per Borough
+
+### Popular Venues
+
 ## Discussion and Conclusions
