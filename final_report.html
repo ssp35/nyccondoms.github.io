@@ -324,14 +324,27 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="final_report.html">Project Report</a>
 </li>
-<li>
-  <a href="https://github.com/ssp35/p8105_final_group_project.git">
+<li class="dropdown-header">Map</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Male and Female Condoms per Borough</li>
+    <li class="dropdown-header">Male and Female Condoms per Venue</li>
+    <li class="dropdown-header">Venues per Borough</li>
+    <li class="dropdown-header">Popular Venues</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ssp35/nyccondoms.github.io.git">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -387,7 +400,6 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <ul>
 <li>How does the availability of products for females and males vary per type of venue?</li>
 <li>How does the availability of products for females and males vary per borough?</li>
-<li>What is the breakdown of condom distribution per type of venue?</li>
 <li>How does the number of venue types vary per borough?</li>
 <li>How does the number of venue subtypes vary per borough?</li>
 <li>What is the most popular type of venue from which to distribute condoms?</li>
@@ -442,7 +454,7 @@ cleaned_data =
 
 cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
   &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hypen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>663</strong> rows and <strong>13</strong> columns.</p>
+<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hypen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>658</strong> rows and <strong>13</strong> columns.</p>
 </div>
 </div>
 <div id="explorartory-analysis" class="section level2">

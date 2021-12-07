@@ -39,7 +39,6 @@ The motivation for this project is to explore the distribution of free condoms a
 
 * How does the availability of products for females and males vary per type of venue?
 * How does the availability of products for females and males vary per borough?
-* What is the breakdown of condom distribution per type of venue?
 * How does the number of venue types vary per borough?
 * How does the number of venue subtypes vary per borough?
 * What is the most popular type of venue from which to distribute condoms?

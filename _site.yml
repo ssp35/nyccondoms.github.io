@@ -2,11 +2,19 @@ name: "NYC Condom Distribution"
 output_dir: "."
 navbar:
   title: "Home"
-  right:
+  left:
     - text: "Project Report"
       href: final_report.html
+    - text: "Map"
+    - text: "Exploratory Analysis"
+      menu:
+        - text: "Male and Female Condoms per Borough"
+        - text: "Male and Female Condoms per Venue"
+        - text: "Venues per Borough"
+        - text: "Popular Venues"
+  right:
     - icon: fa-github fa-lg
-      href: https://github.com/ssp35/p8105_final_group_project.git
+      href: https://github.com/ssp35/nyccondoms.github.io.git
 output:
   html_document:
     cold_folding: hide
