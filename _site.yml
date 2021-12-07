@@ -8,8 +8,7 @@ navbar:
     - text: "Map"
     - text: "Exploratory Analysis"
       menu:
-        - text: "Male and Female Condoms per Borough"
-        - text: "Male and Female Condoms per Venue"
+        - text: "Male and Female Condoms Availability"
         - text: "Venues per Borough"
         - text: "Popular Venues"
   right:
