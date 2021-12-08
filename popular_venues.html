@@ -14,7 +14,7 @@
 <title>Popular Venues</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -33,15 +33,9 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
-<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
-<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -227,6 +221,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -361,6 +358,14 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Popular Venues</h1>
@@ -368,56 +373,9 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)
-library(rvest)
-library(httr)
-library(plotly)
-
-knitr::opts_chunk$set(
-  fig.width = 6,
-  fig.asp = 0.6,
-  out.width = &quot;90%&quot;
-)
-theme_set(theme_minimal())
-
-options(
-  ggplot2.continuous.colour = &quot;viridis&quot;,
-  ggplot2.continuous.fill = &quot;viridis&quot;
-)
-
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d</code></pre>
-<pre class="r"><code>condom_data = 
-  GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
-  content(&quot;parsed&quot;)</code></pre>
-<pre><code>## Rows: 658 Columns: 35</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (18): facilityname, service_category, service_type, partnertype, partner...
-## dbl (11): facility_pk, zipcode, latitude, longitude, startdate, enddate, com...
-## lgl  (6): buildingnumber, address_2, condoms_male, fc2_female_insertive_cond...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>cleaned_data = 
-  condom_data %&gt;% 
-  select(facility_pk, facilityname, partnertype, partner_type_detailed, address, borough, zipcode, latitude, longitude, phone, condoms_male, fc2_female_insertive_condoms, lubricant) %&gt;% 
-  rename(condoms_female = fc2_female_insertive_condoms) %&gt;% 
-  rename(partner_subtype = partner_type_detailed) %&gt;% 
-  mutate(
-    condoms_male = as.factor(condoms_male), 
-    condoms_male = fct_recode(condoms_male, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    condoms_female = as.factor(condoms_female),
-    condoms_female = fct_recode(condoms_female, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    lubricant = as.factor(lubricant),
-    lubricant = fct_recode(lubricant, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    borough = as.factor(borough)
-  )
-
-cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
-  &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<p>Question: What is the most popular venue type/subtype to distribute condoms?</p>
-<p>Venue:</p>
+<div id="overall-most-popular-venues" class="section level2">
+<h2>Overall Most Popular Venues</h2>
+<p>The table below shows the total number of distribution locations for each type of venue that distributes condoms.</p>
 <pre class="r"><code>pop_venue =
   cleaned_data %&gt;% 
   group_by(partnertype) %&gt;% 
@@ -476,17 +434,22 @@ pop_venue %&gt;%
 </tr>
 </tbody>
 </table>
-<p>Top 5 types</p>
+<p>We can see that the most popular types of venues that distribute condoms are Community-Based Organization/Non-Profit and Business. Surprisingly, Sexual Health Clinics only have 2 distribution locations.</p>
 <pre class="r"><code>pop_venue %&gt;% 
   head(5) %&gt;% 
   mutate(partnertype = fct_reorder(partnertype, total_n, .desc = TRUE)) %&gt;% 
-  ggplot(aes(x = partnertype, y = total_n)) +
+  ggplot(aes(x = partnertype, y = total_n, fill = partnertype)) +
   geom_bar(stat = &quot;identity&quot;) +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(title = &quot;Most Popular Venue Types&quot;)</code></pre>
+  theme(axis.text.x = element_text(angle = 70, hjust = 1),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8)) +
+  labs(title = &quot;Top 5 Most Popular Venue Types&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
-<p>Venue subtype:</p>
-<p>Top 10 subtypes</p>
+<p>Visually, we can see that there are many more Community-Based Organization/Non-Profit and Business venues that distribute condoms than any other venue type.</p>
+</div>
+<div id="most-popular-venue-subtypes" class="section level2">
+<h2>Most Popular Venue Subtypes</h2>
+<p>The table below shows the total number of distribution locations for the top 10 most popular subtypes of venue that distribute condoms.</p>
 <pre class="r"><code>pop_subtype =
   cleaned_data %&gt;% 
   group_by(partner_subtype) %&gt;% 
@@ -546,141 +509,18 @@ pop_subtype %&gt;%
 </tr>
 </tbody>
 </table>
+<p>We can see that the most popular subtype of venue that distributes condoms are not classified as anything specific; they are just categorized as Other. The second most popular subtype of venue that distributes condoms is Bar/Lounge.</p>
+<p>To examine the next 9 most popular subtypes of venues that distribute condoms, we will look at a bar graph excluding the category Other.</p>
 <pre class="r"><code>pop_subtype %&gt;% 
+  filter(partner_subtype != &quot;Other&quot;) %&gt;% 
   mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %&gt;% 
-  ggplot(aes(x = partner_subtype, y = total_n)) +
+  ggplot(aes(x = partner_subtype, y = total_n, fill = partner_subtype)) +
   geom_bar(stat = &quot;identity&quot;) +
   theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
   labs(title = &quot;Most Popular Venue Subtypes&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
-<p>Most popular venue subtype within each venue type</p>
-<pre class="r"><code>pop_subtype_per_venue =
-  cleaned_data %&gt;% 
-  group_by(partnertype, partner_subtype) %&gt;% 
-  summarize(total_n = n()) %&gt;% 
-  top_n(3) %&gt;% 
-  ungroup() %&gt;% 
-  arrange(partnertype, desc(total_n)) %&gt;% 
-  filter(total_n &gt; 1)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;partnertype&#39;. You can override using the `.groups` argument.</code></pre>
-<pre><code>## Selecting by total_n</code></pre>
-<pre class="r"><code>pop_subtype_per_venue %&gt;% 
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">partnertype</th>
-<th align="left">partner_subtype</th>
-<th align="right">total_n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Business</td>
-<td align="left">Bar/Lounge</td>
-<td align="right">105</td>
-</tr>
-<tr class="even">
-<td align="left">Business</td>
-<td align="left">Barbershop</td>
-<td align="right">36</td>
-</tr>
-<tr class="odd">
-<td align="left">Business</td>
-<td align="left">Beauty Salon</td>
-<td align="right">11</td>
-</tr>
-<tr class="even">
-<td align="left">Community Health Center</td>
-<td align="left">Other</td>
-<td align="right">48</td>
-</tr>
-<tr class="odd">
-<td align="left">Community Health Center</td>
-<td align="left">Clinical Facility</td>
-<td align="right">26</td>
-</tr>
-<tr class="even">
-<td align="left">Community Health Center</td>
-<td align="left">Women’s Center</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">Community-Based Organization/Non-Profit</td>
-<td align="left">Other</td>
-<td align="right">234</td>
-</tr>
-<tr class="even">
-<td align="left">Community-Based Organization/Non-Profit</td>
-<td align="left">Social Service</td>
-<td align="right">18</td>
-</tr>
-<tr class="odd">
-<td align="left">Community-Based Organization/Non-Profit</td>
-<td align="left">Community Center</td>
-<td align="right">15</td>
-</tr>
-<tr class="even">
-<td align="left">Education</td>
-<td align="left">Student Housing</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">Government</td>
-<td align="left">Community Center</td>
-<td align="right">11</td>
-</tr>
-<tr class="even">
-<td align="left">Government</td>
-<td align="left">Government Agency</td>
-<td align="right">6</td>
-</tr>
-<tr class="odd">
-<td align="left">Hospital</td>
-<td align="left">Other</td>
-<td align="right">20</td>
-</tr>
-<tr class="even">
-<td align="left">Hospital</td>
-<td align="left">Clinical Facility</td>
-<td align="right">9</td>
-</tr>
-<tr class="odd">
-<td align="left">Hospital</td>
-<td align="left">None</td>
-<td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="left">Pharmacy</td>
-<td align="left">Other</td>
-<td align="right">11</td>
-</tr>
-<tr class="odd">
-<td align="left">Private Practice</td>
-<td align="left">Physician</td>
-<td align="right">16</td>
-</tr>
-<tr class="even">
-<td align="left">Sexual Health Clinics (NYC DOHMH)</td>
-<td align="left">Clinical Facility</td>
-<td align="right">2</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code>pop_subtype_per_venue %&gt;% 
-  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %&gt;% 
-  ggplot(aes(x = partnertype, y = total_n, fill = partner_subtype)) +
-  geom_bar(stat = &quot;identity&quot;, position = position_dodge()) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1)) </code></pre>
-<p><img src="popular_venues_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
-<pre class="r"><code>pop_subtype_per_venue %&gt;% 
-  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %&gt;% 
-  plot_ly(x = ~partnertype, y = ~total_n)</code></pre>
-<pre><code>## No trace type specified:
-##   Based on info supplied, a &#39;bar&#39; trace seems appropriate.
-##   Read more about this trace type -&gt; https://plotly.com/r/reference/#bar</code></pre>
-<div id="htmlwidget-29bfc423da21b728e6d3" style="width:90%;height:345.6px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-29bfc423da21b728e6d3">{"x":{"visdat":{"407649bccecc":["function () ","plotlyVisDat"]},"cur_data":"407649bccecc","attrs":{"407649bccecc":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"partnertype","type":"category","categoryorder":"array","categoryarray":["Business","Community Health Center","Community-Based Organization/Non-Profit","Education","Government","Hospital","Pharmacy","Private Practice","Sexual Health Clinics (NYC DOHMH)"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"total_n"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Business","Business","Business","Community Health Center","Community Health Center","Community Health Center","Community-Based Organization/Non-Profit","Community-Based Organization/Non-Profit","Community-Based Organization/Non-Profit","Education","Government","Government","Hospital","Hospital","Hospital","Pharmacy","Private Practice","Sexual Health Clinics (NYC DOHMH)"],"y":[105,36,11,48,26,2,234,18,15,2,11,6,20,9,3,11,16,2],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Visually, we can see that there are many more Bar/Lounge venues that distribute condoms than any other subtype of venue.</p>
+</div>
 
 
 
@@ -717,6 +557,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

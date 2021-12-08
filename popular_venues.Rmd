@@ -3,7 +3,7 @@ title: "Popular Venues"
 output: html_document
 ---
 
-```{r setup, message=FALSE}
+```{r setup, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
@@ -25,7 +25,7 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-```{r}
+```{r message=FALSE, echo=FALSE}
 condom_data = 
   GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
   content("parsed")
@@ -49,9 +49,9 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
   "Community-Based Organization/Non-Profit"
 ```
 
-Question: What is the most popular venue type/subtype to distribute condoms?
+## Overall Most Popular Venues
 
-Venue:
+The table below shows the total number of distribution locations for each type of venue that distributes condoms. 
 
 ```{r}
 pop_venue =
@@ -64,21 +64,26 @@ pop_venue %>%
   knitr::kable()
 ```
 
-Top 5 types
+We can see that the most popular types of venues that distribute condoms are `r pop_venue$partnertype[1]` and `r pop_venue$partnertype[2]`. Surprisingly, Sexual Health Clinics only have `r pop_venue %>% filter(partnertype == "Sexual Health Clinics (NYC DOHMH)") %>% pull(total_n)` distribution locations.
 
 ```{r}
 pop_venue %>% 
   head(5) %>% 
   mutate(partnertype = fct_reorder(partnertype, total_n, .desc = TRUE)) %>% 
-  ggplot(aes(x = partnertype, y = total_n)) +
+  ggplot(aes(x = partnertype, y = total_n, fill = partnertype)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(title = "Most Popular Venue Types")
+  theme(axis.text.x = element_text(angle = 70, hjust = 1),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8)) +
+  labs(title = "Top 5 Most Popular Venue Types")
 ```
 
-Venue subtype:
+Visually, we can see that there are many more `r pop_venue$partnertype[1]` and `r pop_venue$partnertype[2]` venues that distribute condoms than any other venue type.
 
-Top 10 subtypes
+## Most Popular Venue Subtypes
+
+The table below shows the total number of distribution locations for the top 10 most popular subtypes of venue that distribute condoms.
+
 ```{r}
 pop_subtype =
   cleaned_data %>% 
@@ -91,44 +96,18 @@ pop_subtype %>%
   knitr::kable()
 ```
 
+We can see that the most popular subtype of venue that distributes condoms are not classified as anything specific; they are just categorized as `r pop_subtype$partner_subtype[1]`. The second most popular subtype of venue that distributes condoms is `r pop_subtype$partner_subtype[2]`.
+
+To examine the next 9 most popular subtypes of venues that distribute condoms, we will look at a bar graph excluding the category Other.
+
 ```{r}
 pop_subtype %>% 
+  filter(partner_subtype != "Other") %>% 
   mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
-  ggplot(aes(x = partner_subtype, y = total_n)) +
+  ggplot(aes(x = partner_subtype, y = total_n, fill = partner_subtype)) +
   geom_bar(stat = "identity") +
   theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
   labs(title = "Most Popular Venue Subtypes")
 ```
 
-Most popular venue subtype within each venue type
-
-```{r}
-pop_subtype_per_venue =
-  cleaned_data %>% 
-  group_by(partnertype, partner_subtype) %>% 
-  summarize(total_n = n()) %>% 
-  top_n(3) %>% 
-  ungroup() %>% 
-  arrange(partnertype, desc(total_n)) %>% 
-  filter(total_n > 1)
-
-pop_subtype_per_venue %>% 
-  knitr::kable()
-```
-
-
-
-```{r}
-pop_subtype_per_venue %>% 
-  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
-  ggplot(aes(x = partnertype, y = total_n, fill = partner_subtype)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1)) 
-```
-
-```{r}
-pop_subtype_per_venue %>% 
-  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %>% 
-  plot_ly(x = ~partnertype, y = ~total_n)
-```
-
+Visually, we can see that there are many more `r pop_subtype$partner_subtype[2]` venues that distribute condoms than any other subtype of venue.

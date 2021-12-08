@@ -2,10 +2,7 @@
 title: "Final Report"
 author: "Saryu Patel, Malvika Venkataraman, Fang (Amy) Liu, Dani Rochez"
 output:
-  html_document:
-    code_folding: hide
-    toc: true
-    toc_float: true
+  html_document
 ---
 
 # NYC Condom Distribution
