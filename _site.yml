@@ -12,6 +12,7 @@ navbar:
           href: female_male_condoms.html
         - text: "Venues per Borough"
         - text: "Popular Venues"
+          href: popular_venues.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/ssp35/nyccondoms.github.io.git
