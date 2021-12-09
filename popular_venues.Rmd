@@ -75,7 +75,9 @@ pop_venue %>%
   theme(axis.text.x = element_text(angle = 70, hjust = 1),
         legend.title = element_text(size = 8),
         legend.text = element_text(size = 8)) +
-  labs(title = "Top 5 Most Popular Venue Types")
+  labs(title = "Top 5 Most Popular Venue Types",
+       x = "Venue Type",
+       y = "Number of Locations")
 ```
 
 Visually, we can see that there are many more `r pop_venue$partnertype[1]` and `r pop_venue$partnertype[2]` venues that distribute condoms than any other venue type.
@@ -107,14 +109,16 @@ pop_subtype %>%
   ggplot(aes(x = partner_subtype, y = total_n, fill = partner_subtype)) +
   geom_bar(stat = "identity") +
   theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
-  labs(title = "Most Popular Venue Subtypes")
+  labs(title = "Most Popular Venue Subtypes",
+       x = "Venue Type",
+       y = "Number of Locations")
 ```
 
 Visually, we can see that there are many more `r pop_subtype$partner_subtype[2]` venues that distribute condoms than any other subtype of venue.
 
-## Top Venues & Subtypes 
+## Top Venues and their Subtypes 
 
-#### **Community-Based Organization/Non-Profit** 
+### Community-Based Organization/Non-Profit
 
 ```{r, message=FALSE}
 cleaned_data %>% 
@@ -131,13 +135,13 @@ cleaned_data %>%
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
     x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for CBO/Non-profits")
+    y = "Number of Locations") + 
+  ggtitle("Number of Partner Subtypes for CBO/Non-profits")
 ```
 
-The top five community-based organizations/non-profits that offers free safer sex products are: others, social services, community centers, education, and housing.
+The top five Community-Based Organizations/Non-Profits that offer free safer sex products are Other, Social Service, Community Center, Education, and Housing locations.
 
-#### **Business**   
+### Business  
 
 ```{r, message=FALSE}
 cleaned_data %>% 
@@ -154,13 +158,13 @@ cleaned_data %>%
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
     x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for Businesses")
+    y = "Number of Locations") + 
+  ggtitle("Number of Partner Subtypes for Businesses")
 ```
 
-The top 5 businesses that offers free safer sex products are bar/lounge, barbershop, beauty salons, night club, and retail stores. 
+The top 5 Businesses that offer free safer sex products are Bar/Lounge, Barbershop, Beauty Salon, Night Club, and Retail Store locations. 
 
-#### **Community Health Centers**
+### Community Health Centers
 
 ```{r, message=FALSE}
 cleaned_data %>% 
@@ -175,10 +179,10 @@ cleaned_data %>%
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
     x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for Community Health Centers")
+    y = "Number of of Locations") + 
+  ggtitle("Number of Partner Subtypes for Community Health Centers")
 ``` 
 
-There are only three community health center subtypes: others, clinical facility, and women's center. 
+There are only three Community Health Center venue subtypes: Other, Clinical Facility, and Women's Center locations. 
 
 

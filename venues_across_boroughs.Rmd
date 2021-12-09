@@ -8,6 +8,7 @@ output:
 library(tidyverse)
 library(rvest)
 library(httr)
+library(plotly)
 ```
 
 ```{r, message=FALSE}
@@ -36,7 +37,7 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
   "Community-Based Organization/Non-Profit"
 ```  
 
-### Number of venues per borough  
+### Number of venues per borough
 ```{r, message=FALSE}
 cleaned_data %>% 
   group_by(borough) %>% 
@@ -55,3 +56,22 @@ cleaned_data %>%
 
 From the bar plot above, we can see that distribution of venues/facilities across the 5 boroughs. For example, over 2/3 of the total # of facilities are in Manhattan and Brooklyn alone, with Staten Island having the fewest number of facilities that offers free safer sex products (e.g., condoms, lubricants). This is not surprising, however, since Staten Island has a smaller population size. 
 
+
+### Number of venue types per borough (intractive)
+```{r, message=FALSE}
+cleaned_data %>% 
+  group_by(borough, partnertype) %>% 
+  summarize(num_partnertype = n()) %>% 
+  plot_ly(
+    x = ~borough, y = ~num_partnertype/sum(num_partnertype), 
+    type = "bar", 
+    color = ~partnertype
+  ) %>% 
+  layout(
+    title = "Distribution of Venue Types in Each Borough",
+    xaxis = list(title = "Borough"),
+    yaxis = list(title = "% of total venues")
+  )
+```
+
+From the **interactive** plot above, we can see the distribution of venue types in each borough. For example, it is clear that Brooklyn has many community-based organizations and non-profits that offer free safer sex products than the other 4 boroughs. We can also see that the top 3 venues that offers free products across the five boroughs are businesses, community health centers, and community-based organizations. Next, we will take a closer look at the sub types within those top 3 venue types to see which facilities are distributing these safer sex products. 
