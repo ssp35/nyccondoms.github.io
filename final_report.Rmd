@@ -99,6 +99,8 @@ First, we imported the dataset as a CSV and parsed it. The variables of interest
 
 ## Exploratory Analysis
 
+## Where Can I Find Condoms in NYC?
+
 ### Male and Female Condoms Availability
 
 ### Venues per Borough

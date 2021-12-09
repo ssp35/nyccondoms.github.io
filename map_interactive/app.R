@@ -41,6 +41,7 @@ r_colors <- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) <- colors()
 
 ui <- fluidPage(
+    titlePanel("Where Can I Find Safe Sex Products in NYC?"),
     tags$head(tags$style(
         type = "text/css",
         "#controlPanel {background-color: rgba(255,255,255,0.8);}",
@@ -52,11 +53,15 @@ ui <- fluidPage(
     sidebarPanel(top = 10, right = 10, width = 210,
                  checkboxGroupInput("condoms_men", "Male Condoms?", choices = unique(cleaned_data_plot$condoms_male)),
                  checkboxGroupInput("condoms_fem", "Female Condoms?", choices = unique(cleaned_data_plot$condoms_female)),
-                 checkboxGroupInput("lube", "Lubricant?", choices = unique(cleaned_data_plot$lubricant))
+                 checkboxGroupInput("lube", "Lubricant?", choices = unique(cleaned_data_plot$lubricant))),
+    mainPanel(
+        p("When we first took a look at the data, we were excited about the possibility of utilizing the latitude and longitude variables to create a map of where free safe sex products are located in NYC. Our goal was to create an interactive tool that would allow users to explore locations by borough and type of safe sex product."),
+        p("We started off by trying to plot all the products as points in leaflet, but the number of points was overwhelming, and as a result unreadable. To mitigate this issue, we decided to cluster the markers on the map, so that the number of locations in a particular area was still represented, but visually, the map was more readable."),
+        p("When looking at all of the marker clusters, we noticed a cluster located in Africa. Since our dataset is specific to NYC, we decided to investigate this. After examining the specific rows, we found out that this was due to longitude and latitude having a value of 0. These were likely missing values, so we filtered values that were “0” for the purpose of the interactive map."),
+        p("To make this map as user-friendly as possible, we decided to make the values of  the variables facilityname, partnertype, partner_subtype, address, borough, phone, condoms_male, condoms_female, and lubricant, display when the user clicks on a specific marker. This way the interactive map can be utilized to display all the relevant information needed for a user to find a location that dispenses the free safe sex product(s) they are looking for. In our data cleaning, we had recoded the variables condoms_male, condoms_female, and lubricant to factors with values “0”, and “1.” As a result, “0” and “1” were displaying on the marker. Since this is not user-friendly, for the plot, we recoded the factor values to “No” and “Yes.”"),
+        p("While the leaflet map displayed all of they key information we were looking to represent, our goal was to create a leaflet map in a shiny app, so that the user would be able to filter the map by type of safe sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget, because it allowed the user to select various combinations of safe sex products most easily."),
+        p("We then spent time working on the aesthetics of app. We added a title to the top, and we moved the checkbox panel to the bottom of the map. "))
     )
-)
-
-
 
 server <- function(input, output, session) {
     
