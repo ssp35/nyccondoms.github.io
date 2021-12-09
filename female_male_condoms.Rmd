@@ -1,7 +1,5 @@
 ---
-title: "final project"
-author: "Daniela Rochez"
-date: "12/6/2021"
+title: "Male and Female Condom Availability"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -51,7 +49,9 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
   "Community-Based Organization/Non-Profit"
 
 ```
+## Distribution of Female and Male Condoms by Venue
 
+Below is a barplot showing the distribution of female and male condoms by venue.
 ```{r}
 tidy_data_partnertype =
   cleaned_data %>% 
@@ -76,8 +76,10 @@ tidy_data_partnertype =
                       labels = c("Female Condom",
                                  "Male Condom")) +
   coord_flip()
+tidy_data_partnertype
 ```
 
+Based on the data, it seems that male condoms are more readily available compared to female condoms and this is observed in all venues. It is also shown that there are substantially more male condoms in businesses and community-based organizations compared to other organizations. This finding is the same for female condoms except that it is more common in community health centers than businesses.
 ```{r}
 tidy_data_borough =
   cleaned_data %>% 
@@ -102,8 +104,13 @@ tidy_data_borough =
                       labels = c("Female Condom",
                                  "Male Condom")) +
   coord_flip()
+tidy_data_borough 
 ```
+There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.
 
+## Distribution of Female and Male Condoms by Venue Subtype
+
+Below is a barplot showing the distribution of female and male condoms by venue subtype.
 ```{r}
 tidy_data_partnersubtype =
   cleaned_data %>% 
@@ -128,5 +135,6 @@ tidy_data_partnersubtype =
                       labels = c("Female Condom",
                                  "Male Condom")) +
   coord_flip()
+tidy_data_partnersubtype
 ```
 
