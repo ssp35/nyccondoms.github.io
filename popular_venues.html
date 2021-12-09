@@ -450,7 +450,9 @@ pop_venue %&gt;%
   theme(axis.text.x = element_text(angle = 70, hjust = 1),
         legend.title = element_text(size = 8),
         legend.text = element_text(size = 8)) +
-  labs(title = &quot;Top 5 Most Popular Venue Types&quot;)</code></pre>
+  labs(title = &quot;Top 5 Most Popular Venue Types&quot;,
+       x = &quot;Venue Type&quot;,
+       y = &quot;Number of Locations&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 <p>Visually, we can see that there are many more Community-Based Organization/Non-Profit and Business venues that distribute condoms than any other venue type.</p>
 </div>
@@ -524,14 +526,16 @@ pop_subtype %&gt;%
   ggplot(aes(x = partner_subtype, y = total_n, fill = partner_subtype)) +
   geom_bar(stat = &quot;identity&quot;) +
   theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
-  labs(title = &quot;Most Popular Venue Subtypes&quot;)</code></pre>
+  labs(title = &quot;Most Popular Venue Subtypes&quot;,
+       x = &quot;Venue Type&quot;,
+       y = &quot;Number of Locations&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <p>Visually, we can see that there are many more Bar/Lounge venues that distribute condoms than any other subtype of venue.</p>
 </div>
-<div id="top-venues-subtypes" class="section level2">
-<h2>Top Venues &amp; Subtypes</h2>
-<div id="community-based-organizationnon-profit" class="section level4">
-<h4><strong>Community-Based Organization/Non-Profit</strong></h4>
+<div id="top-venues-and-their-subtypes" class="section level2">
+<h2>Top Venues and their Subtypes</h2>
+<div id="community-based-organizationnon-profit" class="section level3">
+<h3>Community-Based Organization/Non-Profit</h3>
 <pre class="r"><code>cleaned_data %&gt;% 
   filter(partnertype == &quot;Community-Based Organization/Non-Profit&quot;) %&gt;% 
   group_by(partnertype, partner_subtype) %&gt;% 
@@ -546,13 +550,13 @@ pop_subtype %&gt;%
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
     x = &quot;Venue Type&quot;,
-    y = &quot;# of Venues&quot;) + 
-  ggtitle(&quot;Distibutions of partner subtypes for CBO/Non-profits&quot;)</code></pre>
+    y = &quot;Number of Locations&quot;) + 
+  ggtitle(&quot;Number of Partner Subtypes for CBO/Non-profits&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
-<p>The top five community-based organizations/non-profits that offers free safer sex products are: others, social services, community centers, education, and housing.</p>
+<p>The top five Community-Based Organizations/Non-Profits that offer free safer sex products are Other, Social Service, Community Center, Education, and Housing locations.</p>
 </div>
-<div id="business" class="section level4">
-<h4><strong>Business</strong></h4>
+<div id="business" class="section level3">
+<h3>Business</h3>
 <pre class="r"><code>cleaned_data %&gt;% 
   filter(partnertype == &quot;Business&quot;) %&gt;%
   group_by(partnertype, partner_subtype) %&gt;% 
@@ -567,13 +571,13 @@ pop_subtype %&gt;%
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
     x = &quot;Venue Type&quot;,
-    y = &quot;# of Venues&quot;) + 
-  ggtitle(&quot;Distibutions of partner subtypes for Businesses&quot;)</code></pre>
+    y = &quot;Number of Locations&quot;) + 
+  ggtitle(&quot;Number of Partner Subtypes for Businesses&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
-<p>The top 5 businesses that offers free safer sex products are bar/lounge, barbershop, beauty salons, night club, and retail stores.</p>
+<p>The top 5 Businesses that offer free safer sex products are Bar/Lounge, Barbershop, Beauty Salon, Night Club, and Retail Store locations.</p>
 </div>
-<div id="community-health-centers" class="section level4">
-<h4><strong>Community Health Centers</strong></h4>
+<div id="community-health-centers" class="section level3">
+<h3>Community Health Centers</h3>
 <pre class="r"><code>cleaned_data %&gt;% 
   filter(partnertype == &quot;Community Health Center&quot;) %&gt;% 
   group_by(partnertype, partner_subtype) %&gt;% 
@@ -586,10 +590,10 @@ pop_subtype %&gt;%
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
     x = &quot;Venue Type&quot;,
-    y = &quot;# of Venues&quot;) + 
-  ggtitle(&quot;Distibutions of partner subtypes for Community Health Centers&quot;)</code></pre>
+    y = &quot;Number of of Locations&quot;) + 
+  ggtitle(&quot;Number of Partner Subtypes for Community Health Centers&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
-<p>There are only three community health center subtypes: others, clinical facility, and women’s center.</p>
+<p>There are only three Community Health Center venue subtypes: Other, Clinical Facility, and Women’s Center locations.</p>
 </div>
 </div>
 
