@@ -17,4 +17,3 @@ The motivation for this project is to explore the distribution of free condoms a
 * [Popular Venues](popular_venues.html): Explores which types of venues have the most distribution locations
 * [Screencast]
 * Many people do not know what female condoms are or how to use them. Check out this short, informative [video](https://youtu.be/DBZ7xeT1j6M) to learn more about them!
-* For how to use male condoms, check out this short [video](https://youtu.be/1I2nyyVcicA)!
