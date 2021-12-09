@@ -16,6 +16,8 @@ library(httr)
 
 
 ```{r, include=FALSE}
+getwd()
+
 condom_data = 
     GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
     content("parsed")
