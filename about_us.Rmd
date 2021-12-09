@@ -3,3 +3,16 @@ title: "About the Authors"
 output: html_document
 ---
 
+## Daniela Rochez
+
+<image src="images/dani.JPEG" style="width:75%">
+
+Hi! My name is Daniela Rochez, and I am a first-year MS student in the Epidemiology department. My research interests lie within Maternal and Child Health.
+
+## Saryu Patel
+
+Hello! My name is Saryu Patel, and I am a first-year MS student studying Biostatistics on the Theory and Methods track. My research interests lie in infectious disease and network analysis.
+
+## Malvika Venkataraman
+
+## Fang (Amy) Liu
