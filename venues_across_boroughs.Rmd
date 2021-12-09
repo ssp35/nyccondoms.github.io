@@ -36,7 +36,7 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
   "Community-Based Organization/Non-Profit"
 ```  
 
-### Number of venues per borough
+### Number of venues per borough  
 ```{r, message=FALSE}
 cleaned_data %>% 
   group_by(borough) %>% 
@@ -55,86 +55,3 @@ cleaned_data %>%
 
 From the bar plot above, we can see that distribution of venues/facilities across the 5 boroughs. For example, over 2/3 of the total # of facilities are in Manhattan and Brooklyn alone, with Staten Island having the fewest number of facilities that offers free safer sex products (e.g., condoms, lubricants). This is not surprising, however, since Staten Island has a smaller population size. 
 
-### Number of venue types per borough  
-```{r, message=FALSE}
-cleaned_data %>% 
-  group_by(borough, partnertype) %>% 
-  summarize(num_partnertype = n()) %>% 
-  ggplot(aes(x = borough, y = num_partnertype/sum(num_partnertype), fill = partnertype)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(
-    x = "Borough",
-    y = "% of total venues") + 
-  ggtitle("Distribution of Venue Types in Each Borough") 
-```
-
-From the above plot, we can see the distribution of venue types in each borough. For example, it is clear that Brooklyn has many community-based organizations and non-profits that offer free safer sex products than the other 4 boroughs. We can also see that the top 3 venues that offers free products across the five boroughs are businesses, community health centers, and community-based organizations. Next, we will take a closer look at the sub types within those top 3 venue types to see which facilities are distributing these safer sex products. 
-
-### Top Venues & Subtypes 
-
-#### **Community-Based Organization/Non-Profit** 
-
-```{r, message=FALSE}
-cleaned_data %>% 
-  filter(partnertype == "Community-Based Organization/Non-Profit") %>% 
-  group_by(partnertype, partner_subtype) %>% 
-  summarize(num_subtype = n()) %>% 
-  mutate(
-    partner_subtype = as.factor(partner_subtype),
-    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
-  ) %>% 
-  arrange(desc(num_subtype)) %>% 
-  head(5) %>% 
-  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
-  geom_bar(stat = "identity",  position = "dodge") +
-  labs(
-    x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for CBO/Non-profits")
-```
-
-The top five community-based organizations/non-profits that offers free safer sex products are: others, social services, community centers, education, and housing.
-
-#### **Business**   
-
-```{r, message=FALSE}
-cleaned_data %>% 
-  filter(partnertype == "Business") %>%
-  group_by(partnertype, partner_subtype) %>% 
-  summarize(num_subtype = n()) %>% 
-  mutate(
-    partner_subtype = as.factor(partner_subtype),
-    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
-  ) %>% 
-  arrange(desc(num_subtype)) %>% 
-  head(5) %>% 
-  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
-  geom_bar(stat = "identity",  position = "dodge") +
-  labs(
-    x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for Businesses")
-```
-
-The top 5 businesses that offers free safer sex products are bar/lounge, barbershop, beauty salons, night club, and retail stores. 
-
-#### **Community Health Centers**
-
-```{r, message=FALSE}
-cleaned_data %>% 
-  filter(partnertype == "Community Health Center") %>% 
-  group_by(partnertype, partner_subtype) %>% 
-  summarize(num_subtype = n()) %>% 
-  mutate(
-    partner_subtype = as.factor(partner_subtype),
-    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
-  ) %>% 
-  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
-  geom_bar(stat = "identity",  position = "dodge") +
-  labs(
-    x = "Venue Type",
-    y = "# of Venues") + 
-  ggtitle("Distibutions of partner subtypes for Community Health Centers")
-``` 
-
-There are only three community health center subtypes: others, clinical facility, and women's center. 
