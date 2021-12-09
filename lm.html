@@ -380,20 +380,14 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(rvest)
+library(httr)</code></pre>
 <pre class="r"><code>condom_data = 
   GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
-  content(&quot;parsed&quot;)</code></pre>
-<pre><code>## Rows: 658 Columns: 35</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (18): facilityname, service_category, service_type, partnertype, partner...
-## dbl (11): facility_pk, zipcode, latitude, longitude, startdate, enddate, com...
-## lgl  (6): buildingnumber, address_2, condoms_male, fc2_female_insertive_cond...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>cleaned_data = 
+  content(&quot;parsed&quot;)
+
+cleaned_data = 
   condom_data %&gt;% 
   select(facility_pk, facilityname, partnertype, partner_type_detailed, 
          address, borough, zipcode, latitude, longitude, phone, condoms_male,
@@ -412,7 +406,475 @@ div.tocify {
 
 cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
   &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<p>##Logistic Regression Model for Female Condoms We believe that boroughs, venues, and venue subtypes may influence the availability of condoms. These predictors were added as main effects and we build our model. Based on the table for female condoms, there are no significant associations between the predictor variables and the availability of condoms.</p>
+<div id="logistic-regression-model-for-female-condoms" class="section level2">
+<h2>Logistic Regression Model for Female Condoms</h2>
+<p>We believe that boroughs, venues, and venue subtypes may influence the availability of condoms. These predictors were added as main effects and we build our model. Based on the table for female condoms, there are no significant associations between the predictor variables and the availability of condoms.</p>
+<pre class="r"><code>female_condom_logistic =
+  cleaned_data %&gt;% 
+  glm(condoms_female~borough+partnertype+
+        partner_subtype, data = ., family = binomial())</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code>female_condom_logistic_df =
+  female_condom_logistic %&gt;% 
+  broom::tidy() %&gt;%
+  select(term, estimate,p.value) %&gt;% 
+  knitr::kable(digits = 4)
+
+female_condom_logistic_df</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-21.4622</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">boroughBrooklyn</td>
+<td align="right">-0.1039</td>
+<td align="right">0.8381</td>
+</tr>
+<tr class="odd">
+<td align="left">boroughManhattan</td>
+<td align="right">0.2852</td>
+<td align="right">0.5639</td>
+</tr>
+<tr class="even">
+<td align="left">boroughQueens</td>
+<td align="right">-0.0516</td>
+<td align="right">0.9205</td>
+</tr>
+<tr class="odd">
+<td align="left">boroughStaten Island</td>
+<td align="right">-0.9746</td>
+<td align="right">0.3937</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeCommunity Health Center</td>
+<td align="right">21.2885</td>
+<td align="right">0.9881</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypeCommunity-Based Organization/Non-Profit</td>
+<td align="right">37.6360</td>
+<td align="right">0.9856</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeEducation</td>
+<td align="right">-0.3891</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypeFaith-Based Organization</td>
+<td align="right">-19.5384</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeGovernment</td>
+<td align="right">39.1391</td>
+<td align="right">0.9850</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypeHospital</td>
+<td align="right">20.8478</td>
+<td align="right">0.9883</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypePharmacy</td>
+<td align="right">2.6001</td>
+<td align="right">0.0785</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypePrivate Practice</td>
+<td align="right">1.1310</td>
+<td align="right">0.4889</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeSexual Health Clinics (NYC DOHMH)</td>
+<td align="right">20.0612</td>
+<td align="right">0.9888</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBar/Lounge</td>
+<td align="right">19.7900</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeBarbershop</td>
+<td align="right">19.8148</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBeauty Salon</td>
+<td align="right">20.7621</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeBodega/Deli/Mini Market</td>
+<td align="right">-0.3891</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBook Store</td>
+<td align="right">42.7431</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeCafé</td>
+<td align="right">21.1770</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeChristian Organization</td>
+<td align="right">62.2815</td>
+<td align="right">0.9989</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeClinical Facility</td>
+<td align="right">1.1158</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeCollege/University</td>
+<td align="right">43.1321</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeCommunity Center</td>
+<td align="right">-16.6068</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeEducation</td>
+<td align="right">5.4037</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeElected Official</td>
+<td align="right">3.6040</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeGovernment Agency</td>
+<td align="right">3.8466</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeGym/Health Club</td>
+<td align="right">43.0799</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeHotel/Motel/Lodge/B&amp;B</td>
+<td align="right">43.1321</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeHousing</td>
+<td align="right">-15.4806</td>
+<td align="right">0.9996</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeLaundromat</td>
+<td align="right">-0.2542</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeLegal Service</td>
+<td align="right">5.4962</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeLiquor Store</td>
+<td align="right">-0.1039</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeMen’s Spa</td>
+<td align="right">-0.3891</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeMuseum</td>
+<td align="right">-0.3891</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeNight Club</td>
+<td align="right">19.9893</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeNone</td>
+<td align="right">38.4768</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeNYC Council Member Office</td>
+<td align="right">3.6040</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeOB / OB-GYN</td>
+<td align="right">41.8973</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeOffice</td>
+<td align="right">0.0000</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeOther</td>
+<td align="right">20.0831</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypePharmacy</td>
+<td align="right">42.8934</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypePhysician</td>
+<td align="right">21.1102</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeRestaurant</td>
+<td align="right">19.7339</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeRetail Store</td>
+<td align="right">22.2998</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeSex Store</td>
+<td align="right">21.1770</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeSocial Service</td>
+<td align="right">-14.5513</td>
+<td align="right">0.9996</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeStudent Housing</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeTattoo Parlor</td>
+<td align="right">19.7153</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeTaxi/Car Service</td>
+<td align="right">20.8554</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeTheater</td>
+<td align="right">-0.3891</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeWomen’s Center</td>
+<td align="right">0.2256</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeYMCA/JCC</td>
+<td align="right">5.4439</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeYouth Center</td>
+<td align="right">-16.2906</td>
+<td align="right">0.9996</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="logistic-regression-model-for-male-condoms" class="section level2">
+<h2>Logistic Regression Model for Male Condoms</h2>
+<div id="model-1-borough" class="section level3">
+<h3>Model 1: Borough</h3>
+<pre class="r"><code>factored_data = 
+cleaned_data %&gt;% 
+  mutate(
+    partnertype = factor(partnertype),
+    partner_subtype = factor(partner_subtype)
+  )
+
+logreg_model = 
+  glm(condoms_male ~ borough, data = factored_data, family = &quot;binomial&quot;)
+
+logreg_model %&gt;% 
+  broom::tidy() %&gt;% 
+  janitor::clean_names() %&gt;%
+  mutate(
+    term = str_replace(term, &quot;boroughBrooklyn&quot;, &quot;Brooklyn&quot;),
+    term = str_replace(term, &quot;boroughManhattan&quot;, &quot;Manhattan&quot;),
+    term = str_replace(term, &quot;boroughQueens&quot;, &quot;Queens&quot;),
+    term = str_replace(term, &quot;boroughStaten Island&quot;, &quot;Staten Island&quot;)) %&gt;% 
+  dplyr::select(-c(std_error, statistic)) %&gt;% 
+  knitr::kable(digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">4.1589</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="even">
+<td align="left">Brooklyn</td>
+<td align="right">18.4072</td>
+<td align="right">0.9955</td>
+</tr>
+<tr class="odd">
+<td align="left">Manhattan</td>
+<td align="right">0.6574</td>
+<td align="right">0.5939</td>
+</tr>
+<tr class="even">
+<td align="left">Queens</td>
+<td align="right">18.4072</td>
+<td align="right">0.9967</td>
+</tr>
+<tr class="odd">
+<td align="left">Staten Island</td>
+<td align="right">18.4072</td>
+<td align="right">0.9991</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="model-2-borough-partnertype" class="section level3">
+<h3>Model 2: Borough + Partnertype</h3>
+<pre class="r"><code>logreg_model2 =
+  glm(condoms_male ~ borough + partnertype, data = factored_data, family = &quot;binomial&quot;)
+
+logreg_model2 %&gt;% 
+  broom::tidy() %&gt;% 
+  janitor::clean_names() %&gt;%
+  mutate(
+    term = str_replace(term, &quot;boroughBrooklyn&quot;, &quot;Brooklyn&quot;),
+    term = str_replace(term, &quot;boroughManhattan&quot;, &quot;Manhattan&quot;),
+    term = str_replace(term, &quot;boroughQueens&quot;, &quot;Queens&quot;),
+    term = str_replace(term, &quot;boroughStaten Island&quot;, &quot;Staten Island&quot;)) %&gt;% 
+  mutate(
+    term = str_replace(term, &quot;partnertypeCommunity Health Center&quot;, &quot;Community Health Center&quot;),
+    term = str_replace(term, &quot;partnertypeCommunity-Based Organization/Non-Profit&quot;, &quot;Community-Based Organization/Non-Profit&quot;),
+    term = str_replace(term, &quot;partnertypeEducation&quot;, &quot;Education&quot;),
+    term = str_replace(term, &quot;partnertypeFaith-Based Organization&quot;, &quot;Faith-Based Organization&quot;),
+    term = str_replace(term, &quot;partnertypeGovernment&quot;, &quot;Government&quot;),
+    term = str_replace(term, &quot;partnertypeHospital&quot;, &quot;Hospital&quot;),
+    term = str_replace(term, &quot;partnertypePharmacy&quot;, &quot;Pharmacy&quot;),
+    term = str_replace(term, &quot;partnertypePrivate Practice&quot;, &quot;Private Practice&quot;),
+    term = str_replace(term, &quot;partnertypeSexual Health Clinics (NYC DOHMH)&quot;,
+                       &quot;Sexual Health Clinics (NYC DOHMH)&quot;)
+    ) %&gt;% 
+  dplyr::select(-c(std_error, statistic)) %&gt;% 
+  knitr::kable(digits = 4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">3.0445</td>
+<td align="right">0.0029</td>
+</tr>
+<tr class="even">
+<td align="left">Brooklyn</td>
+<td align="right">18.3067</td>
+<td align="right">0.9968</td>
+</tr>
+<tr class="odd">
+<td align="left">Manhattan</td>
+<td align="right">0.9258</td>
+<td align="right">0.4581</td>
+</tr>
+<tr class="even">
+<td align="left">Queens</td>
+<td align="right">19.4253</td>
+<td align="right">0.9977</td>
+</tr>
+<tr class="odd">
+<td align="left">Staten Island</td>
+<td align="right">18.0756</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">Community Health Center</td>
+<td align="right">18.6369</td>
+<td align="right">0.9981</td>
+</tr>
+<tr class="odd">
+<td align="left">Community-Based Organization/Non-Profit</td>
+<td align="right">18.6235</td>
+<td align="right">0.9965</td>
+</tr>
+<tr class="even">
+<td align="left">Education</td>
+<td align="right">19.5958</td>
+<td align="right">0.9997</td>
+</tr>
+<tr class="odd">
+<td align="left">Faith-Based Organization</td>
+<td align="right">19.0901</td>
+<td align="right">0.9997</td>
+</tr>
+<tr class="even">
+<td align="left">Government</td>
+<td align="right">19.4274</td>
+<td align="right">0.9991</td>
+</tr>
+<tr class="odd">
+<td align="left">Hospital</td>
+<td align="right">19.5623</td>
+<td align="right">0.9988</td>
+</tr>
+<tr class="even">
+<td align="left">Pharmacy</td>
+<td align="right">18.2309</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="odd">
+<td align="left">Private Practice</td>
+<td align="right">19.2859</td>
+<td align="right">0.9991</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeSexual Health Clinics (NYC DOHMH)</td>
+<td align="right">19.5958</td>
+<td align="right">0.9997</td>
+</tr>
+</tbody>
+</table>
+<p>Note above that all of the p-values are greater than 0.05, meaning that none of the predictors are significant.Borough and partner/venue type are not significant predictors of male condom availability. This is not too surprising, considering that all 5 boroughs and most partner types have male_condoms. Logistic regression might not be suitable model for our example.</p>
+</div>
+</div>
 
 
 
