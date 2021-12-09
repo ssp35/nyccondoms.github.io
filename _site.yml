@@ -6,7 +6,7 @@ navbar:
     - text: "Project Report"
       href: final_report.html
     - text: "Map"
-      href: map_interactive/app.R
+      href: map.html
     - text: "Exploratory Analysis"
       menu:
         - text: "Male and Female Condoms Availability"
@@ -15,6 +15,8 @@ navbar:
           href: venues_across_boroughs.html
         - text: "Popular Venues"
           href: popular_venues.html
+    - text: "Statistical Analysis"
+      href: lm.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/ssp35/nyccondoms.github.io.git

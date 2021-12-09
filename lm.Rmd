@@ -7,6 +7,7 @@ output: html_document
 ```{r}
 library(tidyverse)
 ```
+
 ```{r}
 condom_data = 
   GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
@@ -35,12 +36,12 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
 ##Logistic Regression Model for Female Condoms
 We believe that boroughs, venues, and venue subtypes may influence the availability of condoms. These predictors were added as main effects and we build our model. Based on the table for female condoms, there are no significant associations between the predictor variables and the availability of condoms.
 ```{r setup, include=FALSE}
-female_condom_logistic=
+female_condom_logistic =
   cleaned_data %>% 
   glm(condoms_female~borough+partnertype+
         partner_subtype, data = ., family = binomial())
 
-female_condom_logistic_df=
+female_condom_logistic_df =
   female_condom_logistic %>% 
   broom::tidy() %>%
   select(term, estimate,p.value) 

@@ -13,8 +13,8 @@
 
 <title>Male and Female Condom Availability</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -347,6 +347,9 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="lm.html">Statistical Analysis</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -377,63 +380,6 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
-<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
-## v tibble  3.1.4     v dplyr   1.0.7
-## v tidyr   1.1.4     v stringr 1.4.0
-## v readr   2.0.2     v forcats 0.5.1</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(rvest)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;rvest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:readr&#39;:
-## 
-##     guess_encoding</code></pre>
-<pre class="r"><code>library(httr)</code></pre>
-<pre class="r"><code>knitr::opts_chunk$set(
-  out.width = &quot;90%&quot;
-)
-theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
-options(
-  ggplot2.continuous.colour = &quot;viridis&quot;,
-  ggplot2.continuous.fill = &quot;viridis&quot;
-)
-scale_colour_discrete = scale_color_viridis_d
-scale_fill_discrete = scale_fill_viridis_d</code></pre>
-<pre class="r"><code>condom_data = 
-  GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
-  content(&quot;parsed&quot;)</code></pre>
-<pre><code>## Rows: 658 Columns: 35</code></pre>
-<pre><code>## -- Column specification --------------------------------------------------------
-## Delimiter: &quot;,&quot;
-## chr (18): facilityname, service_category, service_type, partnertype, partner...
-## dbl (11): facility_pk, zipcode, latitude, longitude, startdate, enddate, com...
-## lgl  (6): buildingnumber, address_2, condoms_male, fc2_female_insertive_cond...</code></pre>
-<pre><code>## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>cleaned_data = 
-  condom_data %&gt;% 
-  select(facility_pk, facilityname, partnertype, partner_type_detailed, 
-         address, borough, zipcode, latitude, longitude, phone, condoms_male,
-         fc2_female_insertive_condoms, lubricant) %&gt;% 
-  rename(condoms_female = fc2_female_insertive_condoms) %&gt;% 
-  rename(partner_subtype = partner_type_detailed) %&gt;% 
-  mutate(
-    condoms_male = as.factor(condoms_male), 
-    condoms_male = fct_recode(condoms_male, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    condoms_female = as.factor(condoms_female),
-    condoms_female = fct_recode(condoms_female, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    lubricant = as.factor(lubricant),
-    lubricant = fct_recode(lubricant, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
-    borough = as.factor(borough)
-  )
-
-cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
-  &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
 <div id="distribution-of-female-and-male-condoms-by-venue" class="section level2">
 <h2>Distribution of Female and Male Condoms by Venue</h2>
 <p>Below is a barplot showing the distribution of female and male condoms by venue.</p>
@@ -459,9 +405,8 @@ cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organ
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
                                  &quot;Male Condom&quot;)) +
-  coord_flip()</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;partnertype&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>tidy_data_partnertype</code></pre>
+  coord_flip()
+tidy_data_partnertype</code></pre>
 <p><img src="female_male_condoms_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 <p>Based on the data, it seems that male condoms are more readily available compared to female condoms and this is observed in all venues. It is also shown that there are substantially more male condoms in businesses and community-based organizations compared to other organizations. This finding is the same for female condoms except that it is more common in community health centers than businesses.</p>
 <pre class="r"><code>tidy_data_borough =
@@ -486,9 +431,8 @@ cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organ
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
                                  &quot;Male Condom&quot;)) +
-  coord_flip()</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;borough&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>tidy_data_borough </code></pre>
+  coord_flip()
+tidy_data_borough </code></pre>
 <p><img src="female_male_condoms_files/figure-html/unnamed-chunk-5-1.png" width="90%" /> There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.</p>
 </div>
 <div id="distribution-of-female-and-male-condoms-by-venue-subtype" class="section level2">
@@ -516,9 +460,8 @@ cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organ
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
                                  &quot;Male Condom&quot;)) +
-  coord_flip()</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;partner_subtype&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>tidy_data_partnersubtype</code></pre>
+  coord_flip()
+tidy_data_partnersubtype</code></pre>
 <p><img src="female_male_condoms_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
 </div>
 

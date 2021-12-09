@@ -9,10 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Saryu Patel, Malvika Venkataraman, Fang (Amy) Liu, Dani Rochez" />
 
 
-<title>Final Report</title>
+<title>Statistical Analysis</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -376,79 +375,25 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Final Report</h1>
-<h4 class="author">Saryu Patel, Malvika Venkataraman, Fang (Amy) Liu, Dani Rochez</h4>
+<h1 class="title toc-ignore">Statistical Analysis</h1>
 
 </div>
 
 
-<div id="nyc-condom-distribution" class="section level1">
-<h1>NYC Condom Distribution</h1>
-<p>Load required libraries and setup.</p>
-<pre class="r"><code>library(tidyverse)
-library(rvest)
-library(httr)
-
-knitr::opts_chunk$set(
-  out.width = &quot;90%&quot;
-)
-
-theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
-options(
-  ggplot2.continuous.colour = &quot;viridis&quot;,
-  ggplot2.continuous.fill = &quot;viridis&quot;
-)
-
-scale_colour_discrete = scale_color_viridis_d
-scale_fill_discrete = scale_fill_viridis_d</code></pre>
-<div id="motivation" class="section level2">
-<h2>Motivation</h2>
-<p>The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.</p>
-</div>
-<div id="related-work" class="section level2">
-<h2>Related Work</h2>
-</div>
-<div id="initial-questions" class="section level2">
-<h2>Initial Questions</h2>
-<ul>
-<li>How does the availability of products for females and males vary per type of venue?</li>
-<li>How does the availability of products for females and males vary per borough?</li>
-<li>How does the number of venue types vary per borough?</li>
-<li>How does the number of venue subtypes vary per borough?</li>
-<li>What is the most popular type of venue from which to distribute condoms?</li>
-<li>What is the most popular subtype of venue from which to distribute condoms?</li>
-</ul>
-</div>
-<div id="data" class="section level2">
-<h2>Data</h2>
-<p>For our final project, we will be using data from the NYC condom availability program. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products. The dataset can be downloaded directly or accessed by using NYC OpenData’s API, in <code>JSON</code> or <code>CSV</code> formats. For our project, we will access the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data are updated regularly.</p>
-<p>Link for data: <a href="www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh">NYC Condom Availability Program - HIV condom distribution locations</a></p>
-<div id="variables-of-interest" class="section level3">
-<h3>Variables of interest</h3>
-<p><strong>Facility</strong><br />
-* <code>facility_pk</code> - unique facility identifier<br />
-* <code>facilityname</code> - name of the facility<br />
-* <code>partnertype</code> - the type of organization the venue is<br />
-* <code>partner_subtype</code><br />
-* <code>phone</code></p>
-<p><strong>Location</strong><br />
-* <code>address</code> - address of the service location<br />
-* <code>borough</code> - the borough the facility/venue is located in<br />
-* <code>zipcode</code><br />
-* <code>latitude</code><br />
-* <code>longitude</code></p>
-<p><strong>Safer sex products availability</strong><br />
-* <code>condoms_male</code> - whether the location offers condoms for males (1 = yes, 0 = no)<br />
-* <code>condoms_female</code> - whether the location offers female/insertive condoms<br />
-* <code>lubricant</code> - whether the location offers lubricant</p>
-</div>
-<div id="data-cleaning" class="section level3">
-<h3>Data Cleaning</h3>
+<pre class="r"><code>library(tidyverse)</code></pre>
 <pre class="r"><code>condom_data = 
   GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
-  content(&quot;parsed&quot;)
-
-cleaned_data = 
+  content(&quot;parsed&quot;)</code></pre>
+<pre><code>## Rows: 658 Columns: 35</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (18): facilityname, service_category, service_type, partnertype, partner...
+## dbl (11): facility_pk, zipcode, latitude, longitude, startdate, enddate, com...
+## lgl  (6): buildingnumber, address_2, condoms_male, fc2_female_insertive_cond...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>cleaned_data = 
   condom_data %&gt;% 
   select(facility_pk, facilityname, partnertype, partner_type_detailed, 
          address, borough, zipcode, latitude, longitude, phone, condoms_male,
@@ -467,31 +412,7 @@ cleaned_data =
 
 cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
   &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hypen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>658</strong> rows and <strong>13</strong> columns.</p>
-</div>
-</div>
-<div id="exploratory-analysis" class="section level2">
-<h2>Exploratory Analysis</h2>
-<div id="interactive-map" class="section level3">
-<h3>Interactive Map</h3>
-</div>
-<div id="male-and-female-condoms-availability" class="section level3">
-<h3>Male and Female Condoms Availability</h3>
-</div>
-<div id="venues-per-borough" class="section level3">
-<h3>Venues per Borough</h3>
-</div>
-<div id="popular-venues" class="section level3">
-<h3>Popular Venues</h3>
-</div>
-</div>
-<div id="additional-analyses" class="section level2">
-<h2>Additional Analyses</h2>
-</div>
-<div id="discussion-and-conclusions" class="section level2">
-<h2>Discussion and Conclusions</h2>
-</div>
-</div>
+<p>##Logistic Regression Model for Female Condoms We believe that boroughs, venues, and venue subtypes may influence the availability of condoms. These predictors were added as main effects and we build our model. Based on the table for female condoms, there are no significant associations between the predictor variables and the availability of condoms.</p>
 
 
 
