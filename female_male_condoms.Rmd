@@ -53,80 +53,80 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
 ```
 
 ```{r}
-tidy_data_partnertype=
+tidy_data_partnertype =
   cleaned_data %>% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = "type_of_condom",
     values_to = "availability") %>%
-  filter(availability== 1) %>% 
+  filter(availability == 1) %>% 
   group_by(partnertype, type_of_condom) %>% 
   summarize(n_obs = n()) %>% 
   ggplot(aes(x = partnertype, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat="identity", 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat = "identity", 
+                    position = position_dodge()) +
   labs(
     title = 
       "Count of Male and Female Condoms 
        by Partner Type",
     x = "Partner Type",
-    y = "Count")+
+    y = "Count") +
   scale_fill_discrete(name = "Type of Condom", 
                       labels = c("Female Condom",
-                                 "Male Condom"))+
+                                 "Male Condom")) +
   coord_flip()
 ```
 
 ```{r}
-tidy_data_borough=
+tidy_data_borough =
   cleaned_data %>% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = "type_of_condom",
     values_to = "availability") %>%
-  filter(availability== 1) %>% 
+  filter(availability == 1) %>% 
   group_by(borough, type_of_condom) %>% 
   summarize(n_obs = n()) %>% 
     ggplot(aes(x = borough, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat="identity", 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat = "identity", 
+                    position = position_dodge()) +
     labs(
     title = 
       "Count of Male and Female Condoms 
        by Borough",
     x = "Borough",
-    y = "Count")+
+    y = "Count") +
   scale_fill_discrete(name = "Type of Condom", 
                       labels = c("Female Condom",
-                                 "Male Condom"))+
+                                 "Male Condom")) +
   coord_flip()
 ```
 
 ```{r}
-tidy_data_partnersubtype=
+tidy_data_partnersubtype =
   cleaned_data %>% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = "type_of_condom",
     values_to = "availability") %>%
-  filter(availability== 1) %>% 
+  filter(availability == 1) %>% 
   group_by(partner_subtype, type_of_condom) %>% 
   summarize(n_obs = n()) %>% 
   ggplot(aes(x = partner_subtype, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat="identity", 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat ="identity", 
+                    position = position_dodge()) +
   labs(
     title = 
       "Count of Male and Female Condoms 
        by Partner SubType",
     x = "Partner SubType",
-    y = "Count")+
+    y = "Count") +
   scale_fill_discrete(name = "Type of Condom", 
                       labels = c("Female Condom",
-                                 "Male Condom"))+
+                                 "Male Condom")) +
   coord_flip()
 ```
 
