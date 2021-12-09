@@ -16,3 +16,4 @@ The motivation for this project is to explore the distribution of free condoms a
 * [Venues per Borough](venues_across_boroughs.html): Explores what types of venues are located in each borough of NYC
 * [Popular Venues](popular_venues.html): Explores which types of venues have the most distribution locations
 * [Screencast]
+* Many people do not know what female condoms are or how to use them. Check out this short, informative [video](https://youtu.be/DBZ7xeT1j6M) to learn more about them!
