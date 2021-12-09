@@ -18,3 +18,7 @@ The motivation for this project is to explore the distribution of free condoms a
 * [Screencast]
 * Many people do not know what female condoms are or how to use them. Check out this short, informative [video](https://youtu.be/DBZ7xeT1j6M) to learn more about them!
 * For how to use male condoms, check out this short [video](https://youtu.be/1I2nyyVcicA)!
+
+## About the Authors
+
+Click [here](about_us.html) to learn more about us!
