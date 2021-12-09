@@ -1,0 +1,13 @@
+name: condoms_map
+title: condoms_map
+username:
+account: nyccondoms
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5301961
+bundleId: 5352884
+url: https://nyccondoms.shinyapps.io/condoms_map/
+when: 1639093248.81999
+lastSyncTime: 1639093248.82
+asMultiple: FALSE
+asStatic: FALSE

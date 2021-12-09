@@ -6,7 +6,7 @@ navbar:
     - text: "Project Report"
       href: final_report.html
     - text: "Map"
-      href: map.html
+      href: https://nyccondoms.shinyapps.io/condoms_map/
     - text: "Exploratory Analysis"
       menu:
         - text: "Male and Female Condoms Availability"

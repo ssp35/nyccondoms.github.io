@@ -1,22 +1,8 @@
----
-title: "Map"
-runtime: shiny
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 library(shiny)
 library(leaflet)
-library(shinydashboard)
 library(tidyverse)
 library(rvest)
 library(httr)
-```
-
-
-```{r, include=FALSE}
-getwd()
 
 condom_data = 
     GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
@@ -48,21 +34,16 @@ cleaned_data_plot =
     mutate(condoms_male = fct_recode(condoms_male, "No" = "0", "Yes" = "1")) %>%
     mutate(condoms_female = fct_recode(condoms_female, "No" = "0", "Yes" = "1")) %>%
     mutate(lubricant = fct_recode(lubricant, "No" = "0", "Yes" = "1"))
-```
 
-
-```{r, echo = FALSE}
 r_colors <- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) <- colors()
 
-shinyApp(
-  ui <- fluidPage(
+ui <- fluidPage(
     titlePanel("Where Can I Find Safe Sex Products in NYC?"),
     tags$head(tags$style(
         type = "text/css",
         "#controlPanel {background-color: rgba(255,255,255,0.8);}",
-        ".leaflet-top.leaflet-right .leaflet-control {
-      margin-right: 210px;}")),
+        ".leaflet-top.leaflet-right .leaflet-control {margin-right: 210px;}")),
     leafletOutput(outputId = "mymap", width = "100%"),
     sidebarPanel(top = 10, right = 10, width = 210,
                  checkboxGroupInput("condoms_men", "Male Condoms?", 
@@ -70,23 +51,24 @@ shinyApp(
                  checkboxGroupInput("condoms_fem", "Female Condoms?", 
                                     choices = unique(cleaned_data_plot$condoms_female)),
                  checkboxGroupInput("lube", "Lubricant?", 
-                                    choices = unique(cleaned_data_plot$lubricant)))),
-  server <- function(input, output, session) {
+                                    choices = unique(cleaned_data_plot$lubricant))))
+
+server <- function(input, output, session) {
     output$mymap <- renderLeaflet({
-      req(input$condoms_men)
-      cleaned_data_plot = cleaned_data_plot %>%
-        dplyr::filter(condoms_male %in% input$condoms_men)
-      req(input$condoms_fem)
-      cleaned_data_plot = cleaned_data_plot %>%
-        dplyr::filter(condoms_female %in% input$condoms_fem)
-      req(input$lube)
-      cleaned_data_plot = cleaned_data_plot %>%
-        dplyr::filter(lubricant %in% input$lube)
-      leaflet(cleaned_data_plot) %>%
-        addProviderTiles("CartoDB.Positron") %>%
-        addMarkers(clusterOptions = markerClusterOptions(),
-                   lng = cleaned_data_plot$longitude, lat = cleaned_data_plot$latitude,
-                   popup = paste("Facility Name:", cleaned_data_plot$facilityname, "<br>",
+        req(input$condoms_men)
+        cleaned_data_plot = cleaned_data_plot %>%
+            dplyr::filter(condoms_male %in% input$condoms_men)
+        req(input$condoms_fem)
+        cleaned_data_plot = cleaned_data_plot %>%
+            dplyr::filter(condoms_female %in% input$condoms_fem)
+        req(input$lube)
+        cleaned_data_plot = cleaned_data_plot %>%
+            dplyr::filter(lubricant %in% input$lube)
+        leaflet(cleaned_data_plot) %>%
+            addProviderTiles("CartoDB.Positron") %>%
+            addMarkers(clusterOptions = markerClusterOptions(),
+                       lng = cleaned_data_plot$longitude, lat = cleaned_data_plot$latitude,
+                       popup = paste("Facility Name:", cleaned_data_plot$facilityname, "<br>",
                                      "Partner Type:", cleaned_data_plot$partnertype, "<br>",
                                      "Partner Subtype:", cleaned_data_plot$partner_subtype, "<br>",
                                      "Address:", cleaned_data_plot$address, "<br>",
@@ -95,8 +77,8 @@ shinyApp(
                                      "Male Condoms:", cleaned_data_plot$condoms_male, "<br>",
                                      "Female Condoms:", cleaned_data_plot$condoms_female, "<br>",
                                      "Lubricant:", cleaned_data_plot$lubricant)) %>%
-        setView(lat = 40.7, lng = -74, zoom = 10)
+            setView(lat = 40.7, lng = -74, zoom = 10)
     })
-    },
-  options = list(height = 800))
-```
+    }
+
+shinyApp(ui = ui, server = server)
