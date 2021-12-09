@@ -327,7 +327,9 @@ div.tocify {
         <li>
   <a href="final_report.html">Project Report</a>
 </li>
-<li class="dropdown-header">Map</li>
+<li>
+  <a href="app.R">Map</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Exploratory Analysis
@@ -338,7 +340,9 @@ div.tocify {
     <li>
       <a href="female_male_condoms.html">Male and Female Condoms Availability</a>
     </li>
-    <li class="dropdown-header">Venues per Borough</li>
+    <li>
+      <a href="venues_across_boroughs.html">Venues per Borough</a>
+    </li>
     <li>
       <a href="popular_venues.html">Popular Venues</a>
     </li>
@@ -379,9 +383,9 @@ div.tocify {
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.5     ✓ dplyr   1.0.7
+## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
@@ -405,15 +409,29 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <pre class="r"><code>condom_data = 
   GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
   content(&quot;parsed&quot;)</code></pre>
-<pre><code>## Rows: 658 Columns: 35</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (18): facilityname, service_category, service_type, partnertype, partner...
-## dbl (11): facility_pk, zipcode, latitude, longitude, startdate, enddate, com...
-## lgl  (6): buildingnumber, address_2, condoms_male, fc2_female_insertive_cond...</code></pre>
 <pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_character(),
+##   facility_pk = col_double(),
+##   buildingnumber = col_logical(),
+##   address_2 = col_logical(),
+##   zipcode = col_double(),
+##   latitude = col_double(),
+##   longitude = col_double(),
+##   startdate = col_double(),
+##   enddate = col_double(),
+##   condoms_male = col_logical(),
+##   fc2_female_insertive_condoms = col_logical(),
+##   lubricant = col_logical(),
+##   facility_type = col_logical(),
+##   community_board = col_double(),
+##   council_district = col_double(),
+##   census_tract = col_double(),
+##   bin = col_double(),
+##   bbl = col_double()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>cleaned_data = 
   condom_data %&gt;% 
   select(facility_pk, facilityname, partnertype, partner_type_detailed, 
@@ -433,76 +451,76 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 
 cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
   &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<pre class="r"><code>tidy_data_partnertype=
+<pre class="r"><code>tidy_data_partnertype =
   cleaned_data %&gt;% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = &quot;type_of_condom&quot;,
     values_to = &quot;availability&quot;) %&gt;%
-  filter(availability== 1) %&gt;% 
+  filter(availability == 1) %&gt;% 
   group_by(partnertype, type_of_condom) %&gt;% 
   summarize(n_obs = n()) %&gt;% 
   ggplot(aes(x = partnertype, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat=&quot;identity&quot;, 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat = &quot;identity&quot;, 
+                    position = position_dodge()) +
   labs(
     title = 
       &quot;Count of Male and Female Condoms 
        by Partner Type&quot;,
     x = &quot;Partner Type&quot;,
-    y = &quot;Count&quot;)+
+    y = &quot;Count&quot;) +
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
-                                 &quot;Male Condom&quot;))+
+                                 &quot;Male Condom&quot;)) +
   coord_flip()</code></pre>
 <pre><code>## `summarise()` has grouped output by &#39;partnertype&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>tidy_data_borough=
+<pre class="r"><code>tidy_data_borough =
   cleaned_data %&gt;% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = &quot;type_of_condom&quot;,
     values_to = &quot;availability&quot;) %&gt;%
-  filter(availability== 1) %&gt;% 
+  filter(availability == 1) %&gt;% 
   group_by(borough, type_of_condom) %&gt;% 
   summarize(n_obs = n()) %&gt;% 
     ggplot(aes(x = borough, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat=&quot;identity&quot;, 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat = &quot;identity&quot;, 
+                    position = position_dodge()) +
     labs(
     title = 
       &quot;Count of Male and Female Condoms 
        by Borough&quot;,
     x = &quot;Borough&quot;,
-    y = &quot;Count&quot;)+
+    y = &quot;Count&quot;) +
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
-                                 &quot;Male Condom&quot;))+
+                                 &quot;Male Condom&quot;)) +
   coord_flip()</code></pre>
 <pre><code>## `summarise()` has grouped output by &#39;borough&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>tidy_data_partnersubtype=
+<pre class="r"><code>tidy_data_partnersubtype =
   cleaned_data %&gt;% 
   pivot_longer(
     condoms_male:condoms_female,
     names_to = &quot;type_of_condom&quot;,
     values_to = &quot;availability&quot;) %&gt;%
-  filter(availability== 1) %&gt;% 
+  filter(availability == 1) %&gt;% 
   group_by(partner_subtype, type_of_condom) %&gt;% 
   summarize(n_obs = n()) %&gt;% 
   ggplot(aes(x = partner_subtype, y = n_obs,
-             fill=type_of_condom))+
-  geom_bar(stat=&quot;identity&quot;, 
-                    position = position_dodge())+
+             fill = type_of_condom)) +
+  geom_bar(stat =&quot;identity&quot;, 
+                    position = position_dodge()) +
   labs(
     title = 
       &quot;Count of Male and Female Condoms 
        by Partner SubType&quot;,
     x = &quot;Partner SubType&quot;,
-    y = &quot;Count&quot;)+
+    y = &quot;Count&quot;) +
   scale_fill_discrete(name = &quot;Type of Condom&quot;, 
                       labels = c(&quot;Female Condom&quot;,
-                                 &quot;Male Condom&quot;))+
+                                 &quot;Male Condom&quot;)) +
   coord_flip()</code></pre>
 <pre><code>## `summarise()` has grouped output by &#39;partner_subtype&#39;. You can override using the `.groups` argument.</code></pre>
 

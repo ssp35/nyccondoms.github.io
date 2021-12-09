@@ -11,7 +11,7 @@
 
 
 
-<title>Popular Venues</title>
+<title>Venues per Borough</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -372,158 +372,132 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Popular Venues</h1>
+<h1 class="title toc-ignore">Venues per Borough</h1>
 
 </div>
 
 
-<div id="overall-most-popular-venues" class="section level2">
-<h2>Overall Most Popular Venues</h2>
-<p>The table below shows the total number of distribution locations for each type of venue that distributes condoms.</p>
-<pre class="r"><code>pop_venue =
-  cleaned_data %&gt;% 
-  group_by(partnertype) %&gt;% 
-  summarize(total_n = n()) %&gt;% 
-  arrange(desc(total_n))
+<pre class="r"><code>library(tidyverse)
+library(rvest)
+library(httr)</code></pre>
+<pre class="r"><code>condom_data = 
+  GET(&quot;https://data.cityofnewyork.us/resource/4kpn-sezh.csv&quot;) %&gt;% 
+  content(&quot;parsed&quot;)
 
-pop_venue %&gt;% 
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">partnertype</th>
-<th align="right">total_n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Community-Based Organization/Non-Profit</td>
-<td align="right">281</td>
-</tr>
-<tr class="even">
-<td align="left">Business</td>
-<td align="right">212</td>
-</tr>
-<tr class="odd">
-<td align="left">Community Health Center</td>
-<td align="right">76</td>
-</tr>
-<tr class="even">
-<td align="left">Hospital</td>
-<td align="right">30</td>
-</tr>
-<tr class="odd">
-<td align="left">Government</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">Private Practice</td>
-<td align="right">19</td>
-</tr>
-<tr class="odd">
-<td align="left">Pharmacy</td>
-<td align="right">13</td>
-</tr>
-<tr class="even">
-<td align="left">Education</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left">Faith-Based Organization</td>
-<td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="left">Sexual Health Clinics (NYC DOHMH)</td>
-<td align="right">2</td>
-</tr>
-</tbody>
-</table>
-<p>We can see that the most popular types of venues that distribute condoms are Community-Based Organization/Non-Profit and Business. Surprisingly, Sexual Health Clinics only have 2 distribution locations.</p>
-<pre class="r"><code>pop_venue %&gt;% 
+cleaned_data = 
+  condom_data %&gt;% 
+  select(facility_pk, facilityname, partnertype, partner_type_detailed, 
+         address, borough, zipcode, latitude, longitude, phone, condoms_male,
+         fc2_female_insertive_condoms, lubricant) %&gt;% 
+  rename(condoms_female = fc2_female_insertive_condoms) %&gt;% 
+  rename(partner_subtype = partner_type_detailed) %&gt;% 
+  mutate(
+    condoms_male = as.factor(condoms_male), 
+    condoms_male = fct_recode(condoms_male, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    condoms_female = as.factor(condoms_female),
+    condoms_female = fct_recode(condoms_female, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    lubricant = as.factor(lubricant),
+    lubricant = fct_recode(lubricant, &quot;0&quot; = &quot;FALSE&quot;, &quot;1&quot; = &quot;TRUE&quot;),
+    borough = as.factor(borough)
+  )
+
+cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
+  &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
+<div id="number-of-venues-per-borough" class="section level3">
+<h3>Number of venues per borough</h3>
+<pre class="r"><code>cleaned_data %&gt;% 
+  group_by(borough) %&gt;% 
+  summarize(n = n()) %&gt;% 
+  mutate(
+    borough = fct_reorder(borough, n, .desc = TRUE)
+  ) %&gt;% 
+  ggplot(aes(x = borough, y = n/sum(n), fill = borough)) +
+  geom_bar(stat = &quot;identity&quot;) + 
+  geom_text(aes(label = round(n/sum(n), 4)), vjust = -0.25) +
+  labs(
+    x = &quot;Borough&quot;,
+    y = &quot;% of venues/facilities&quot;) + 
+  ggtitle(&quot;Distribution of Venues/facilities Per Borough&quot;)</code></pre>
+<p><img src="venues_across_boroughs_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>From the bar plot above, we can see that distribution of venues/facilities across the 5 boroughs. For example, over 2/3 of the total # of facilities are in Manhattan and Brooklyn alone, with Staten Island having the fewest number of facilities that offers free safer sex products (e.g., condoms, lubricants). This is not surprising, however, since Staten Island has a smaller population size.</p>
+</div>
+<div id="number-of-venue-types-per-borough" class="section level3">
+<h3>Number of venue types per borough</h3>
+<pre class="r"><code>cleaned_data %&gt;% 
+  group_by(borough, partnertype) %&gt;% 
+  summarize(num_partnertype = n()) %&gt;% 
+  ggplot(aes(x = borough, y = num_partnertype/sum(num_partnertype), fill = partnertype)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+  labs(
+    x = &quot;Borough&quot;,
+    y = &quot;% of total venues&quot;) + 
+  ggtitle(&quot;Distribution of Venue Types in Each Borough&quot;) </code></pre>
+<p><img src="venues_across_boroughs_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>From the above plot, we can see the distribution of venue types in each borough. For example, it is clear that Brooklyn has many community-based organizations and non-profits that offer free safer sex products than the other 4 boroughs. We can also see that the top 3 venues that offers free products across the five boroughs are businesses, community health centers, and community-based organizations. Next, we will take a closer look at the sub types within those top 3 venue types to see which facilities are distributing these safer sex products.</p>
+</div>
+<div id="top-venues-subtypes" class="section level3">
+<h3>Top Venues &amp; Subtypes</h3>
+<div id="community-based-organizationnon-profit" class="section level4">
+<h4><strong>Community-Based Organization/Non-Profit</strong></h4>
+<pre class="r"><code>cleaned_data %&gt;% 
+  filter(partnertype == &quot;Community-Based Organization/Non-Profit&quot;) %&gt;% 
+  group_by(partnertype, partner_subtype) %&gt;% 
+  summarize(num_subtype = n()) %&gt;% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %&gt;% 
+  arrange(desc(num_subtype)) %&gt;% 
   head(5) %&gt;% 
-  mutate(partnertype = fct_reorder(partnertype, total_n, .desc = TRUE)) %&gt;% 
-  ggplot(aes(x = partnertype, y = total_n, fill = partnertype)) +
-  geom_bar(stat = &quot;identity&quot;) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1),
-        legend.title = element_text(size = 8),
-        legend.text = element_text(size = 8)) +
-  labs(title = &quot;Top 5 Most Popular Venue Types&quot;)</code></pre>
-<p><img src="popular_venues_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
-<p>Visually, we can see that there are many more Community-Based Organization/Non-Profit and Business venues that distribute condoms than any other venue type.</p>
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
+  labs(
+    x = &quot;Venue Type&quot;,
+    y = &quot;# of Venues&quot;) + 
+  ggtitle(&quot;Distibutions of partner subtypes for CBO/Non-profits&quot;)</code></pre>
+<p><img src="venues_across_boroughs_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The top five community-based organizations/non-profits that offers free safer sex products are: others, social services, community centers, education, and housing.</p>
 </div>
-<div id="most-popular-venue-subtypes" class="section level2">
-<h2>Most Popular Venue Subtypes</h2>
-<p>The table below shows the total number of distribution locations for the top 10 most popular subtypes of venue that distribute condoms.</p>
-<pre class="r"><code>pop_subtype =
-  cleaned_data %&gt;% 
-  group_by(partner_subtype) %&gt;% 
-  summarize(total_n = n()) %&gt;% 
-  arrange(desc(total_n)) %&gt;% 
-  head(10)
-
-pop_subtype %&gt;% 
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">partner_subtype</th>
-<th align="right">total_n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Other</td>
-<td align="right">317</td>
-</tr>
-<tr class="even">
-<td align="left">Bar/Lounge</td>
-<td align="right">105</td>
-</tr>
-<tr class="odd">
-<td align="left">Barbershop</td>
-<td align="right">36</td>
-</tr>
-<tr class="even">
-<td align="left">Clinical Facility</td>
-<td align="right">36</td>
-</tr>
-<tr class="odd">
-<td align="left">Community Center</td>
-<td align="right">27</td>
-</tr>
-<tr class="even">
-<td align="left">Physician</td>
-<td align="right">18</td>
-</tr>
-<tr class="odd">
-<td align="left">Social Service</td>
-<td align="right">18</td>
-</tr>
-<tr class="even">
-<td align="left">Beauty Salon</td>
-<td align="right">12</td>
-</tr>
-<tr class="odd">
-<td align="left">Night Club</td>
-<td align="right">10</td>
-</tr>
-<tr class="even">
-<td align="left">Retail Store</td>
-<td align="right">7</td>
-</tr>
-</tbody>
-</table>
-<p>We can see that the most popular subtype of venue that distributes condoms are not classified as anything specific; they are just categorized as Other. The second most popular subtype of venue that distributes condoms is Bar/Lounge.</p>
-<p>To examine the next 9 most popular subtypes of venues that distribute condoms, we will look at a bar graph excluding the category Other.</p>
-<pre class="r"><code>pop_subtype %&gt;% 
-  filter(partner_subtype != &quot;Other&quot;) %&gt;% 
-  mutate(partner_subtype = fct_reorder(partner_subtype, total_n, .desc = TRUE)) %&gt;% 
-  ggplot(aes(x = partner_subtype, y = total_n, fill = partner_subtype)) +
-  geom_bar(stat = &quot;identity&quot;) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
-  labs(title = &quot;Most Popular Venue Subtypes&quot;)</code></pre>
-<p><img src="popular_venues_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
-<p>Visually, we can see that there are many more Bar/Lounge venues that distribute condoms than any other subtype of venue.</p>
+<div id="business" class="section level4">
+<h4><strong>Business</strong></h4>
+<pre class="r"><code>cleaned_data %&gt;% 
+  filter(partnertype == &quot;Business&quot;) %&gt;%
+  group_by(partnertype, partner_subtype) %&gt;% 
+  summarize(num_subtype = n()) %&gt;% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %&gt;% 
+  arrange(desc(num_subtype)) %&gt;% 
+  head(5) %&gt;% 
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
+  labs(
+    x = &quot;Venue Type&quot;,
+    y = &quot;# of Venues&quot;) + 
+  ggtitle(&quot;Distibutions of partner subtypes for Businesses&quot;)</code></pre>
+<p><img src="venues_across_boroughs_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The top 5 businesses that offers free safer sex products are bar/lounge, barbershop, beauty salons, night club, and retail stores.</p>
+</div>
+<div id="community-health-centers" class="section level4">
+<h4><strong>Community Health Centers</strong></h4>
+<pre class="r"><code>cleaned_data %&gt;% 
+  filter(partnertype == &quot;Community Health Center&quot;) %&gt;% 
+  group_by(partnertype, partner_subtype) %&gt;% 
+  summarize(num_subtype = n()) %&gt;% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %&gt;% 
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
+  labs(
+    x = &quot;Venue Type&quot;,
+    y = &quot;# of Venues&quot;) + 
+  ggtitle(&quot;Distibutions of partner subtypes for Community Health Centers&quot;)</code></pre>
+<p><img src="venues_across_boroughs_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>There are only three community health center subtypes: others, clinical facility, and women’s center.</p>
+</div>
 </div>
 
 

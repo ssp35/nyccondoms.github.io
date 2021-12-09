@@ -12,6 +12,7 @@ navbar:
         - text: "Male and Female Condoms Availability"
           href: female_male_condoms.html
         - text: "Venues per Borough"
+          href: venues_across_boroughs.html
         - text: "Popular Venues"
           href: popular_venues.html
   right:
