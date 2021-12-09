@@ -111,3 +111,74 @@ pop_subtype %>%
 ```
 
 Visually, we can see that there are many more `r pop_subtype$partner_subtype[2]` venues that distribute condoms than any other subtype of venue.
+
+## Top Venues & Subtypes 
+
+#### **Community-Based Organization/Non-Profit** 
+
+```{r, message=FALSE}
+cleaned_data %>% 
+  filter(partnertype == "Community-Based Organization/Non-Profit") %>% 
+  group_by(partnertype, partner_subtype) %>% 
+  summarize(num_subtype = n()) %>% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %>% 
+  arrange(desc(num_subtype)) %>% 
+  head(5) %>% 
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = "identity",  position = "dodge") +
+  labs(
+    x = "Venue Type",
+    y = "# of Venues") + 
+  ggtitle("Distibutions of partner subtypes for CBO/Non-profits")
+```
+
+The top five community-based organizations/non-profits that offers free safer sex products are: others, social services, community centers, education, and housing.
+
+#### **Business**   
+
+```{r, message=FALSE}
+cleaned_data %>% 
+  filter(partnertype == "Business") %>%
+  group_by(partnertype, partner_subtype) %>% 
+  summarize(num_subtype = n()) %>% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %>% 
+  arrange(desc(num_subtype)) %>% 
+  head(5) %>% 
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = "identity",  position = "dodge") +
+  labs(
+    x = "Venue Type",
+    y = "# of Venues") + 
+  ggtitle("Distibutions of partner subtypes for Businesses")
+```
+
+The top 5 businesses that offers free safer sex products are bar/lounge, barbershop, beauty salons, night club, and retail stores. 
+
+#### **Community Health Centers**
+
+```{r, message=FALSE}
+cleaned_data %>% 
+  filter(partnertype == "Community Health Center") %>% 
+  group_by(partnertype, partner_subtype) %>% 
+  summarize(num_subtype = n()) %>% 
+  mutate(
+    partner_subtype = as.factor(partner_subtype),
+    partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
+  ) %>% 
+  ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
+  geom_bar(stat = "identity",  position = "dodge") +
+  labs(
+    x = "Venue Type",
+    y = "# of Venues") + 
+  ggtitle("Distibutions of partner subtypes for Community Health Centers")
+``` 
+
+There are only three community health center subtypes: others, clinical facility, and women's center. 
+
+
