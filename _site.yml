@@ -6,7 +6,7 @@ navbar:
     - text: "Project Report"
       href: final_report.html
     - text: "Map"
-      href: app.R
+      href: map_interactive/app.R
     - text: "Exploratory Analysis"
       menu:
         - text: "Male and Female Condoms Availability"
