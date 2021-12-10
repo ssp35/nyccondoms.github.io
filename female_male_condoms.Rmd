@@ -110,7 +110,7 @@ tidy_data_borough =
 tidy_data_borough 
 ```
 
-There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.
+There is not much variation between subtypes in the venues. Aside from the Other category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also poses true for female condoms except they are not available as much in barber shops.
 
 ## Distribution of Female and Male Condoms by Venue Subtype
 
