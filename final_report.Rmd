@@ -125,7 +125,7 @@ When we first took a look at the data, we were excited about the possibility of 
 
 We started off by trying to plot all the products as points in leaflet, but the number of points was overwhelming, and as a result, unreadable. To mitigate this issue, we decided to cluster the markers on the map, so that the number of locations in a particular area was still represented, but more readable. 
 
-```{r}
+```{r eval=FALSE}
 # cluster markers 
 leaflet(cleaned_data_plot) %>%
   addProviderTiles("CartoDB.Positron") %>%
@@ -147,7 +147,7 @@ When looking at all of the marker clusters, we noticed a cluster located in Afri
 
 To make this map as user-friendly as possible, we decided to make the values of  the variables `facilityname`, `partnertype`, `partner_subtype`, `address`, `borough`, `phone`, `condoms_male`, `condoms_female`, and `lubricant`, display when the user clicks on a specific marker. This way the interactive map can be utilized to display all the relevant information needed for a user to find a location that dispenses the free safer sex product(s) they are looking for. In our data cleaning, we had recoded the variables `condoms_male`, `condoms_female`, and `lubricant` to factors with values “0”, and “1.” As a result, “0” and “1” were displaying on the marker. Since this is not user-friendly, for the plot, we recoded the factor values to “No” and “Yes.” 
 
-```{r}
+```{r eval=FALSE}
 # filtering and factor recoding - cleaning data for the purposes of the plot
 cleaned_data_plot =
     cleaned_data %>% 
@@ -160,7 +160,7 @@ cleaned_data_plot =
 
 While the leaflet map displayed all of they key information we were looking to represent, our goal was to include the map in a shiny app, so that the user would be able to filter the map by type of safer sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget because it allowed the user to select various combinations of safer sex products most easily. 
 
-```{r}
+```{r eval=FALSE}
 # checkbox group inputs within ui variable
 ui <- fluidPage(
     titlePanel("Where Can I Find Safer Sex Products in NYC?"),
@@ -186,11 +186,15 @@ Click [here](female_male_condoms.html) to learn more about where you can find ma
 
 ### Venues per Borough
 
+Click [here](venues_across_boroughs.html) to learn more about which venues can be found in which boroughs of NYC. 
+
 ### Popular Venues
+
+Click [here](popular_venues.html) to learn more about which types of venues have the greatest numbers of condom distribution locations.
 
 ## Additional Analyses
 
-Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included `borough`, `partnertype`, and `partner_subtype` in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available on [Statistical Analysis](lm.html)
+Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included `borough`, `partnertype`, and `partner_subtype` in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available [here](lm.html).
 
 ## Discussion
 
@@ -198,15 +202,15 @@ Because we were interested in the binary outcome of whether a condom was availab
 
 #### R programming
 
-Coding errors can sometime feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. 
+Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. 
 
 #### Collaborative Coding
 
-Our group had never worked on a collaborative coding project of this extent. A common issue we encountered was attempting to push before all changes were pulled, especially when all of us were making edits to the project at the same time. Creating defined tasks helped, so that we could minimize the amount of accidental duplicate work. We also had to learn each others coding styles, in the more collaborative sections. 
+Our group had never worked on a collaborative coding project of this extent. A common issue we encountered was attempting to push before all changes were pulled, especially when all of us were making edits to the project at the same time. Creating defined tasks helped so that we could minimize the amount of accidental duplicate work. We also had to learn each others coding styles, in the more collaborative sections. 
 
 #### Data
 
-Although the data was pretty clean, it would’ve been nice if there were more continuous variables, especially for our regression models. This would've allowed for greater variety in the types of analysis and visualizations we could perform.
+Although the data was pretty clean, it would have been nice if there were more continuous variables, especially for our regression models. This would have allowed for greater variety in the types of analyses and visualizations we could perform and create.
 
 ## Conclusions
 

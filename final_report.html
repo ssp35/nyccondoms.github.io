@@ -415,13 +415,26 @@ scale_colour_discrete = scale_color_viridis_d
 scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
+<p>Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department’s NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant and are distributed at local businesses, community-based organizations and health care facilities.</p>
 <p>The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.</p>
 </div>
 <div id="related-work" class="section level2">
 <h2>Related Work</h2>
+<p>We all have an interest in sexual health and were looking for a project that could make a difference in the city we live in; NYC. This dataset melded our two interests.</p>
 </div>
 <div id="initial-questions" class="section level2">
 <h2>Initial Questions</h2>
+<p>Initially, we were looking to explore the following questions:</p>
+<ul>
+<li>How does the number of venue types vary per borough?</li>
+<li>How does the availability of products for females and males vary per type of venue?</li>
+<li>How does the availability of products for females and males vary per borough?</li>
+<li>What is the breakdown of condom distribution per organization type?</li>
+<li>What is the most popular type of venue from which to distribute condoms?</li>
+</ul>
+<p>We also were looking to explore questions related to hours of operation on each day of the week; however, we decided not to move forward with this analysis because there was a lot of missing data in the hours of operation variables.</p>
+<p>Since the venue subtype variable contained information we thought would be valuable, we decided to add the questions, “How does the number of venue subtypes vary per borough?” and “What is the most popular subtype of venue from which to distribute condoms?”. We realized the question “What is the breakdown of condom distribution per organization type?” was repetitive, so we removed it.</p>
+<p>The final questions we explored were as follows:</p>
 <ul>
 <li>How does the availability of products for females and males vary per type of venue?</li>
 <li>How does the availability of products for females and males vary per borough?</li>
@@ -433,7 +446,7 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
-<p>For our final project, we will be using data from the NYC condom availability program. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products. The dataset can be downloaded directly or accessed by using NYC OpenData’s API, in <code>JSON</code> or <code>CSV</code> formats. For our project, we will access the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data are updated regularly.</p>
+<p>We used data from the NYC condom availability program for our analysis. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products. The dataset can be downloaded directly or accessed by using NYC OpenData’s API, in <code>JSON</code> or <code>CSV</code> formats. For our project, we accessed the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data is updated regularly.</p>
 <p>Link for data: <a href="www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh">NYC Condom Availability Program - HIV condom distribution locations</a></p>
 <div id="variables-of-interest" class="section level3">
 <h3>Variables of interest</h3>
@@ -441,8 +454,7 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 * <code>facility_pk</code> - unique facility identifier<br />
 * <code>facilityname</code> - name of the facility<br />
 * <code>partnertype</code> - the type of organization the venue is<br />
-* <code>partner_subtype</code><br />
-* <code>phone</code></p>
+* <code>partner_subtype</code> - subtype of organization the venue is * <code>phone</code></p>
 <p><strong>Location</strong><br />
 * <code>address</code> - address of the service location<br />
 * <code>borough</code> - the borough the facility/venue is located in<br />
@@ -479,29 +491,95 @@ cleaned_data =
 
 cleaned_data$partnertype[cleaned_data$partnertype == &quot;Community Based Organization/Non-Profit&quot;] =
   &quot;Community-Based Organization/Non-Profit&quot;</code></pre>
-<p>First, we imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hypen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>658</strong> rows and <strong>13</strong> columns.</p>
+<p>To clean the data, we first imported the dataset as a CSV and parsed it. The variables of interest were then selected and renamed. The <code>servicetype</code> and <code>service_category</code> variables were dropped because they only contain 1 category; we also excluded the hours of operation because of excess incomplete/null data. Other variables, such as <code>council_district</code>, <code>census_tract</code>, <code>bin</code>, <code>bbl</code>, and <code>nta</code> were dropped because they are irrelevant to our key research questions. After finalizing and renaming some of our variables for convenience, we converted <code>condoms_male</code>, <code>condoms_female</code>, <code>lubricant</code>, and <code>borough</code> into factors and reordered the levels to facilitate data processing and manipulation in later steps. Upon diving in to exploratory data analysis, we noticed that <code>partnertype</code> “Community-Based Organization/Non-Profit” was also recorded with a slightly different format (without a hyphen between “Community” and “Based”), so we edited this column to fix any inconsistencies. As a result of the cleaning steps above, our final dataset contains <strong>660</strong> rows and <strong>13</strong> columns.</p>
 </div>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
 <div id="interactive-map" class="section level3">
 <h3>Interactive Map</h3>
+<p>When we first took a look at the data, we were excited about the possibility of utilizing the <code>latitude</code> and <code>longitude</code> variables to create a map of where free safer sex products are located in NYC. Our goal was to create an interactive tool that would allow users to explore locations by borough and type of safer sex product.</p>
+<p>We started off by trying to plot all the products as points in leaflet, but the number of points was overwhelming, and as a result, unreadable. To mitigate this issue, we decided to cluster the markers on the map, so that the number of locations in a particular area was still represented, but more readable.</p>
+<pre class="r"><code># cluster markers 
+leaflet(cleaned_data_plot) %&gt;%
+  addProviderTiles(&quot;CartoDB.Positron&quot;) %&gt;%
+  addMarkers(clusterOptions = markerClusterOptions(),
+             lng = cleaned_data_plot$longitude, lat = cleaned_data_plot$latitude,
+             popup = paste(&quot;Facility Name:&quot;, cleaned_data_plot$facilityname, &quot;&lt;br&gt;&quot;,
+                           &quot;Partner Type:&quot;, cleaned_data_plot$partnertype, &quot;&lt;br&gt;&quot;,
+                           &quot;Partner Subtype:&quot;, cleaned_data_plot$partner_subtype, &quot;&lt;br&gt;&quot;,
+                           &quot;Address:&quot;, cleaned_data_plot$address, &quot;&lt;br&gt;&quot;,
+                           &quot;Borough:&quot;, cleaned_data_plot$borough, &quot;&lt;br&gt;&quot;,
+                           &quot;Phone:&quot;, cleaned_data_plot$phone, &quot;&lt;br&gt;&quot;,
+                           &quot;Male Condoms:&quot;, cleaned_data_plot$condoms_male, &quot;&lt;br&gt;&quot;,
+                           &quot;Female Condoms:&quot;, cleaned_data_plot$condoms_female, &quot;&lt;br&gt;&quot;,
+                           &quot;Lubricant:&quot;, cleaned_data_plot$lubricant)) %&gt;%
+  setView(lat = 40.7, lng = -74, zoom = 10)</code></pre>
+<p>When looking at all of the marker clusters, we noticed a cluster located in Africa. Since our dataset is specific to NYC, we decided to investigate this. After examining the specific rows, we found out that this was due to “0” values in the <code>longitude</code> and <code>latitude</code> variables. These were likely missing values, so we filtered out values that were “0” for the purpose of the map.</p>
+<p>To make this map as user-friendly as possible, we decided to make the values of the variables <code>facilityname</code>, <code>partnertype</code>, <code>partner_subtype</code>, <code>address</code>, <code>borough</code>, <code>phone</code>, <code>condoms_male</code>, <code>condoms_female</code>, and <code>lubricant</code>, display when the user clicks on a specific marker. This way the interactive map can be utilized to display all the relevant information needed for a user to find a location that dispenses the free safer sex product(s) they are looking for. In our data cleaning, we had recoded the variables <code>condoms_male</code>, <code>condoms_female</code>, and <code>lubricant</code> to factors with values “0”, and “1.” As a result, “0” and “1” were displaying on the marker. Since this is not user-friendly, for the plot, we recoded the factor values to “No” and “Yes.”</p>
+<pre class="r"><code># filtering and factor recoding - cleaning data for the purposes of the plot
+cleaned_data_plot =
+    cleaned_data %&gt;% 
+    filter(longitude != 0) %&gt;% #removed 0 long and lat
+    filter(latitude != 0) %&gt;%
+    mutate(condoms_male = fct_recode(condoms_male, &quot;No&quot; = &quot;0&quot;, &quot;Yes&quot; = &quot;1&quot;)) %&gt;%
+    mutate(condoms_female = fct_recode(condoms_female, &quot;No&quot; = &quot;0&quot;, &quot;Yes&quot; = &quot;1&quot;)) %&gt;%
+    mutate(lubricant = fct_recode(lubricant, &quot;No&quot; = &quot;0&quot;, &quot;Yes&quot; = &quot;1&quot;))</code></pre>
+<p>While the leaflet map displayed all of they key information we were looking to represent, our goal was to include the map in a shiny app, so that the user would be able to filter the map by type of safer sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget because it allowed the user to select various combinations of safer sex products most easily.</p>
+<pre class="r"><code># checkbox group inputs within ui variable
+ui &lt;- fluidPage(
+    titlePanel(&quot;Where Can I Find Safer Sex Products in NYC?&quot;),
+    tags$head(tags$style(
+        type = &quot;text/css&quot;,
+        &quot;#controlPanel {background-color: rgba(255,255,255,0.8);}&quot;,
+        &quot;.leaflet-top.leaflet-right .leaflet-control {margin-right: 210px;}&quot;)),
+    leafletOutput(outputId = &quot;mymap&quot;, width = &quot;100%&quot;),
+    sidebarPanel(top = 10, right = 10, width = 210,
+                 checkboxGroupInput(&quot;condoms_men&quot;, &quot;Male Condoms?&quot;, 
+                                    choices = unique(cleaned_data_plot$condoms_male)),
+                 checkboxGroupInput(&quot;condoms_fem&quot;, &quot;Female Condoms?&quot;, 
+                                    choices = unique(cleaned_data_plot$condoms_female)),
+                 checkboxGroupInput(&quot;lube&quot;, &quot;Lubricant?&quot;, 
+                                    choices = unique(cleaned_data_plot$lubricant))))</code></pre>
+<p>We then spent time working on the aesthetics of app. We added a title to the top, instructions on how to use the map, and we moved the checkbox panel to the bottom.</p>
 </div>
 <div id="male-and-female-condoms-availability" class="section level3">
 <h3>Male and Female Condoms Availability</h3>
+<p>Click <a href="female_male_condoms.html">here</a> to learn more about where you can find male and female condoms.</p>
 </div>
 <div id="venues-per-borough" class="section level3">
 <h3>Venues per Borough</h3>
+<p>Click <a href="venues_across_boroughs.html">here</a> to learn more about which venues can be found in which boroughs of NYC.</p>
 </div>
 <div id="popular-venues" class="section level3">
 <h3>Popular Venues</h3>
+<p>Click <a href="popular_venues.html">here</a> to learn more about which types of venues have the greatest numbers of condom distribution locations.</p>
 </div>
 </div>
 <div id="additional-analyses" class="section level2">
 <h2>Additional Analyses</h2>
+<p>Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included <code>borough</code>, <code>partnertype</code>, and <code>partner_subtype</code> in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available <a href="lm.html">here</a>.</p>
 </div>
-<div id="discussion-and-conclusions" class="section level2">
-<h2>Discussion and Conclusions</h2>
+<div id="discussion" class="section level2">
+<h2>Discussion</h2>
+<div id="problems" class="section level3">
+<h3>Problems</h3>
+<div id="r-programming" class="section level4">
+<h4>R programming</h4>
+<p>Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny.</p>
+</div>
+<div id="collaborative-coding" class="section level4">
+<h4>Collaborative Coding</h4>
+<p>Our group had never worked on a collaborative coding project of this extent. A common issue we encountered was attempting to push before all changes were pulled, especially when all of us were making edits to the project at the same time. Creating defined tasks helped so that we could minimize the amount of accidental duplicate work. We also had to learn each others coding styles, in the more collaborative sections.</p>
+</div>
+<div id="data-1" class="section level4">
+<h4>Data</h4>
+<p>Although the data was pretty clean, it would have been nice if there were more continuous variables, especially for our regression models. This would have allowed for greater variety in the types of analyses and visualizations we could perform and create.</p>
+</div>
+</div>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
 </div>
 </div>
 
