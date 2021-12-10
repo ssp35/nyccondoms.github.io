@@ -176,4 +176,23 @@ We then spent time working on the aesthetics of app. We added a title to the top
 
 Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included `borough`, `partnertype`, and `partner_subtype` in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available on [Statistical Analysis](lm.html)
 
-## Discussion and Conclusions
+## Discussion
+
+### Problems
+
+#### R programming
+
+Coding errors can sometime feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. 
+
+#### Collaborative Coding
+
+Our group had never worked on a collaborative coding project of this extent. A common issue we encountered was attempting to push before all changes were pulled, especially when all of us were making edits to the project at the same time. Creating defined tasks helped, so that we could minimize the amount of accidental duplicate work. We also had to learn each others coding styles, in the more collaborative sections. 
+
+#### Data
+
+Although the data was pretty clean, it would’ve been nice if there were more continuous variables, especially for our regression models. 
+
+## Conclusions
+
+
+
