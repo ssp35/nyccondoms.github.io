@@ -52,10 +52,10 @@ cleaned_data %>%
   labs(
     x = "Borough",
     y = "% of Venues/Facilities") + 
-  ggtitle("Distribution of Venues/facilities Per Borough")
+  ggtitle("Distribution of Venues Per Borough")
 ```
 
-From the bar plot above, we can see the distribution of venues/facilities across the 5 boroughs. For example, over 2/3 of the total number of facilities are in Manhattan and Brooklyn alone, with Staten Island having the fewest number of facilities that offer free safer sex products (e.g., condoms, lubricants). This is not surprising, however, since Staten Island has a smaller population size. 
+From the bar plot above, we can see the distribution of venues across the 5 boroughs. For example, over 2/3 of the total number of venues are in Manhattan and Brooklyn alone, with Staten Island having the fewest number of venues that offer free safer sex products (e.g., condoms, lubricants). This is not surprising, however, since Staten Island has a smaller population size. 
 
 
 ### Venue Types per Borough

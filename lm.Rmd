@@ -3,13 +3,13 @@ title: "Statistical Analysis"
 output: html_document
 ---
 
-```{r, message=FALSE}
+```{r, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
 ```
 
-```{r, message=FALSE}
+```{r, message=FALSE, echo=FALSE}
 condom_data = 
   GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
   content("parsed")
