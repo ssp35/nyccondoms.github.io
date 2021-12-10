@@ -66,20 +66,25 @@ From looking at the distribution, it seems `partnertype` may be an important pre
 logreg_model = 
   glm(condoms_female ~ partnertype, data = factored_data, family = "binomial")
 
-logreg_model %>% 
+log_sum =
+  logreg_model %>% 
   broom::tidy() %>% 
   janitor::clean_names() %>%
   mutate(
     term = str_replace(term, "partnertypeCommunity Health Center", "Community Health Center"),
-    term = str_replace(term, "partnertypeCommunity-Based Organization/Non-Profit", "Community-Based Organization/Non-Profit"),
+    term = str_replace(term, "partnertypeCommunity-Based Organization/Non-Profit",
+                       "Community-Based Organization/Non-Profit"),
     term = str_replace(term, "partnertypeEducation", "Education"),
     term = str_replace(term, "partnertypeFaith-Based Organization", "Faith-Based Organization"),
     term = str_replace(term, "partnertypeGovernment", "Government"),
     term = str_replace(term, "partnertypeHospital", "Hospital"),
     term = str_replace(term, "partnertypePharmacy", "Pharmacy"),
     term = str_replace(term, "partnertypePrivate Practice", "Private Practice"),
-    term = str_replace(term, "partnertypeSexual Health Clinics (NYC DOHMH)",
-                       "Sexual Health Clinics (NYC DOHMH)")) %>% 
+    )
+
+log_sum$term[log_sum$term == "partnertypeSexual Health Clinics (NYC DOHMH)"] = "Sexual Health Clinics (NYC DOHMH)"
+
+log_sum %>% 
   dplyr::select(-c(std_error, statistic)) %>% 
   knitr::kable(digits = 5)
 ```
