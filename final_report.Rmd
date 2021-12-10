@@ -174,4 +174,6 @@ We then spent time working on the aesthetics of app. We added a title to the top
 
 ## Additional Analyses
 
+Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included `borough`, `partnertype`, and `partner_subtype` in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available on [Statistical Analysis](lm.html)
+
 ## Discussion and Conclusions
