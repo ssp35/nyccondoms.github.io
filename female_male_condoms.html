@@ -445,7 +445,8 @@ tidy_data_partnertype</code></pre>
                                  &quot;Male Condom&quot;)) +
   coord_flip()
 tidy_data_borough </code></pre>
-<p><img src="female_male_condoms_files/figure-html/unnamed-chunk-5-1.png" width="90%" /> There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.</p>
+<p><img src="female_male_condoms_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p>There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.</p>
 </div>
 <div id="distribution-of-female-and-male-condoms-by-venue-subtype" class="section level2">
 <h2>Distribution of Female and Male Condoms by Venue Subtype</h2>
@@ -461,7 +462,7 @@ tidy_data_borough </code></pre>
   summarize(n_obs = n()) %&gt;% 
   ggplot(aes(x = partner_subtype, y = n_obs,
              fill = type_of_condom)) +
-  geom_bar(stat =&quot;identity&quot;, 
+  geom_bar(stat = &quot;identity&quot;, 
                     position = position_dodge()) +
   labs(
     title = 

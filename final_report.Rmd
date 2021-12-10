@@ -30,7 +30,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Motivation
 
-Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department's NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant, and are distributed at local businesses, community-based organizations and health care facilities.
+Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department's NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant and are distributed at local businesses, community-based organizations and health care facilities.
 
 The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.
 
@@ -48,7 +48,7 @@ Initially, we were looking to explore the following questions:
 * What is the breakdown of condom distribution per organization type?
 * What is the most popular type of venue from which to distribute condoms?
 
-We also were looking to explore questions related to hours of operation on each day of the week, however we decided not to move forward with this analysis because there was a lot of missing data in the variables.
+We also were looking to explore questions related to hours of operation on each day of the week; however, we decided not to move forward with this analysis because there was a lot of missing data in the hours of operation variables.
 
 Since the venue subtype variable contained information we thought would be valuable, we decided to add the questions, "How does the number of venue subtypes vary per borough?" and "What is the most popular subtype of venue from which to distribute condoms?". We realized the question "What is the breakdown of condom distribution per organization type?" was repetitive, so we removed it. 
 
@@ -158,7 +158,7 @@ cleaned_data_plot =
     mutate(lubricant = fct_recode(lubricant, "No" = "0", "Yes" = "1"))
 ```
 
-While the leaflet map displayed all of they key information we were looking to represent, our goal was to include the map in a shiny app, so that the user would be able to filter the map by type of safer sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget, because it allowed the user to select various combinations of safer sex products most easily. 
+While the leaflet map displayed all of they key information we were looking to represent, our goal was to include the map in a shiny app, so that the user would be able to filter the map by type of safer sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget because it allowed the user to select various combinations of safer sex products most easily. 
 
 ```{r}
 # checkbox group inputs within ui variable
@@ -181,6 +181,8 @@ ui <- fluidPage(
 We then spent time working on the aesthetics of app. We added a title to the top, instructions on how to use the map, and we moved the checkbox panel to the bottom. 
 
 ### Male and Female Condoms Availability
+
+Click [here](female_male_condoms.html) to learn more about where you can find male and female condoms.
 
 ### Venues per Borough
 

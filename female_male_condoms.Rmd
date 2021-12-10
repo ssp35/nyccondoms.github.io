@@ -49,9 +49,11 @@ cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organizati
   "Community-Based Organization/Non-Profit"
 
 ```
+
 ## Distribution of Female and Male Condoms by Venue
 
 Below is a barplot showing the distribution of female and male condoms by venue.
+
 ```{r message=FALSE}
 tidy_data_partnertype =
   cleaned_data %>% 
@@ -80,6 +82,7 @@ tidy_data_partnertype
 ```
 
 Based on the data, it seems that male condoms are more readily available compared to female condoms and this is observed in all venues. It is also shown that there are substantially more male condoms in businesses and community-based organizations compared to other organizations. This finding is the same for female condoms except that it is more common in community health centers than businesses.
+
 ```{r message=FALSE}
 tidy_data_borough =
   cleaned_data %>% 
@@ -106,11 +109,13 @@ tidy_data_borough =
   coord_flip()
 tidy_data_borough 
 ```
+
 There is not much variation between sub types in the venues. Aside from the “other” category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also pose true for female condoms except they are not available as much in barber shops.
 
 ## Distribution of Female and Male Condoms by Venue Subtype
 
 Below is a barplot showing the distribution of female and male condoms by venue subtype.
+
 ```{r message=FALSE}
 tidy_data_partnersubtype =
   cleaned_data %>% 
@@ -123,7 +128,7 @@ tidy_data_partnersubtype =
   summarize(n_obs = n()) %>% 
   ggplot(aes(x = partner_subtype, y = n_obs,
              fill = type_of_condom)) +
-  geom_bar(stat ="identity", 
+  geom_bar(stat = "identity", 
                     position = position_dodge()) +
   labs(
     title = 
