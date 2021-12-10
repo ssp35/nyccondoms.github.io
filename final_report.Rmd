@@ -202,7 +202,7 @@ Click [here](lm.html) to see if we were able to predict condom availability.
 
 #### R programming
 
-Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. 
+Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. One other specific issue we encountered was in replacing `partnertypeSexual Health Clinics (NYC DOHMH)` with `Sexual Health Clinics (NYC DOHMH)` using `str_replace` in the logistic regression results, even though the function worked for all other terms. To fix this issue, we added the line, `log_sum$term[log_sum$term == "partnertypeSexual Health Clinics (NYC DOHMH)"] = "Sexual Health Clinics (NYC DOHMH)"`, which did work.
 
 #### Collaborative Coding
 
