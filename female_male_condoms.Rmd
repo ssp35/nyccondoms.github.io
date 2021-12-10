@@ -83,35 +83,6 @@ tidy_data_partnertype
 
 Based on the data, it seems that male condoms are more readily available compared to female condoms and this is observed in all venues. It is also shown that there are substantially more male condoms in businesses and community-based organizations compared to other organizations. This finding is the same for female condoms except that it is more common in community health centers than businesses.
 
-```{r message=FALSE}
-tidy_data_borough =
-  cleaned_data %>% 
-  pivot_longer(
-    condoms_male:condoms_female,
-    names_to = "type_of_condom",
-    values_to = "availability") %>%
-  filter(availability == 1) %>% 
-  group_by(borough, type_of_condom) %>% 
-  summarize(n_obs = n()) %>% 
-    ggplot(aes(x = borough, y = n_obs,
-             fill = type_of_condom)) +
-  geom_bar(stat = "identity", 
-                    position = position_dodge()) +
-    labs(
-    title = 
-      "Count of Male and Female Condoms 
-       by Borough",
-    x = "Borough",
-    y = "Count") +
-  scale_fill_discrete(name = "Type of Condom", 
-                      labels = c("Female Condom",
-                                 "Male Condom")) +
-  coord_flip()
-tidy_data_borough 
-```
-
-There is not much variation between subtypes in the venues. Aside from the Other category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also poses true for female condoms except they are not available as much in barber shops.
-
 ## Distribution of Female and Male Condoms by Venue Subtype
 
 Below is a barplot showing the distribution of female and male condoms by venue subtype.
@@ -139,7 +110,54 @@ tidy_data_partnersubtype =
   scale_fill_discrete(name = "Type of Condom", 
                       labels = c("Female Condom",
                                  "Male Condom")) +
-  coord_flip()
+  coord_flip() +
+  theme(axis.text = element_text(size = 6))
+
 tidy_data_partnersubtype
 ```
+
+There is not much variation between subtypes in the venues. Aside from the Other category, it seems like there are more male condoms in bars, barber shops, and clinical facilities. This also poses true for female condoms except they are not available as much in barber shops.
+
+## Distribution of Female and Male Condoms by Borough
+
+Below is a barplot showing the distribution of female and male condoms by borough.
+
+```{r message=FALSE}
+tidy_data_borough =
+  cleaned_data %>% 
+  pivot_longer(
+    condoms_male:condoms_female,
+    names_to = "type_of_condom",
+    values_to = "availability") %>%
+  filter(availability == 1) %>% 
+  group_by(borough, type_of_condom) %>% 
+  summarize(n_obs = n()) %>% 
+    ggplot(aes(x = borough, y = n_obs,
+             fill = type_of_condom)) +
+  geom_bar(stat = "identity", 
+                    position = position_dodge()) +
+    labs(
+    title = 
+      "Count of Male and Female Condoms 
+       by Borough",
+    x = "Borough",
+    y = "Count") +
+  scale_fill_discrete(name = "Type of Condom", 
+                      labels = c("Female Condom",
+                                 "Male Condom")) +
+  coord_flip()
+tidy_data_borough 
+```
+
+All boroughs distribute a greater number of male condoms than female condoms. Brooklyn distributes the greatest number of female condoms, and Manhattan distributes the greatest number of male condoms. When examining this plot, it is important to take into consideration the population size of the boroughs:
+
+* The population of Manhattan: 1.632 million.
+* The population of Queens: 2.299 million.
+* The population of the Bronx: 1.438 million.
+* The population of Brooklyn: 2.601 million.
+* The population of Staten Island: 474,101.
+
+
+Staten Island's numbers aren't surprising considering its small population size. Considering that Queens has the second largest population of the boroughs, it does not distribute many male or female condoms.
+
 
