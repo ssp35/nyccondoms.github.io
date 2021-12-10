@@ -155,7 +155,7 @@ logreg_model_male %>%
   knitr::kable(digits = 4)
 ```
 
-As expected, none of the boroughs are significant predictors of female condom availability at α = 0.05.
+As expected, none of the boroughs are significant predictors of male condom availability at α = 0.05.
 
 ### Model 2: Borough + Partner Type
 
