@@ -8,7 +8,12 @@ output: html_document
 library(tidyverse)
 library(rvest)
 library(httr)
+library(table1)
 ```
+
+# Logistic Regression 
+
+Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We evaluated the inclusion of `borough`, `partnertype` in the models to see if these variables were significant in predicting the availability of a condom.
 
 ```{r, message=FALSE}
 condom_data = 
@@ -34,43 +39,114 @@ cleaned_data =
 
 cleaned_data$partnertype[cleaned_data$partnertype == "Community Based Organization/Non-Profit"] =
   "Community-Based Organization/Non-Profit"
-```
 
-## Logistic Regression Model for Female Condoms
-We believe that boroughs, venues, and venue subtypes may influence the availability of condoms. These predictors were added as main effects and we build our model. Based on the table for female condoms, there are no significant associations between the predictor variables and the availability of condoms.
-```{r, message=FALSE}
-female_condom_logistic =
-  cleaned_data %>% 
-  glm(condoms_female~borough+partnertype+
-        partner_subtype, data = ., family = binomial())
-
-female_condom_logistic_df =
-  female_condom_logistic %>% 
-  broom::tidy() %>%
-  select(term, estimate,p.value) %>% 
-  knitr::kable(digits = 4)
-
-female_condom_logistic_df
-```
-
-
-## Logistic Regression Model for Male Condoms  
-
-### Model 1: Borough 
-```{r, message=FALSE}
 factored_data = 
 cleaned_data %>% 
   mutate(
     partnertype = factor(partnertype),
     partner_subtype = factor(partner_subtype)
   )
+```
 
+## Logistic Regression Model for Female Condoms
+
+To begin building our model for female condoms, we took a better look at the distribution of the data and the variables we were interested in.
+
+```{r}
+table1(~ borough + partnertype | condoms_female, 
+       data = factored_data,
+       caption = "Table 1: Distribution of Boroughs and Venue-Related 
+       Covariates by Availability of Female Condoms")
+```
+
+
+From looking at the distribution, it seems `partnertype` may be an important predictor of female condom availability, so we will begin with that as a main effect and add other `borough` from there.
+
+### Model 1: Partner Type 
+```{r, message=FALSE}
 logreg_model = 
-  glm(condoms_male ~ borough, data = factored_data, family = "binomial")
+  glm(condoms_female ~ partnertype, data = factored_data, family = "binomial")
 
 logreg_model %>% 
   broom::tidy() %>% 
   janitor::clean_names() %>%
+  mutate(
+    term = str_replace(term, "partnertypeCommunity Health Center", "Community Health Center"),
+    term = str_replace(term, "partnertypeCommunity-Based Organization/Non-Profit", "Community-Based Organization/Non-Profit"),
+    term = str_replace(term, "partnertypeEducation", "Education"),
+    term = str_replace(term, "partnertypeFaith-Based Organization", "Faith-Based Organization"),
+    term = str_replace(term, "partnertypeGovernment", "Government"),
+    term = str_replace(term, "partnertypeHospital", "Hospital"),
+    term = str_replace(term, "partnertypePharmacy", "Pharmacy"),
+    term = str_replace(term, "partnertypePrivate Practice", "Private Practice"),
+    term = str_replace(term, "partnertypeSexual Health Clinics (NYC DOHMH)",
+                       "Sexual Health Clinics (NYC DOHMH)")) %>% 
+  dplyr::select(-c(std_error, statistic)) %>% 
+  knitr::kable(digits = 5)
+```
+
+We can see from our main effects model that venues under the categories: Community Health Center, Community-Based Organization/Non-Profit, Government, Hospital, Pharmacy and Private Practice, are significant predictors of female condom availability at α = 0.05.
+
+### Model 2: Partner Type + Borough
+
+To build out our model, we will include the effects of boroughs.
+
+```{r, message=FALSE, warning=FALSE}
+female_condom_logistic =
+  glm(condoms_female ~ borough + partnertype, data = factored_data, family = binomial())
+
+
+ female_condom_logistic %>% 
+   broom::tidy() %>% 
+   janitor::clean_names() %>%
+     mutate(
+     term = str_replace(term, "boroughBrooklyn", "Brooklyn"),
+     term = str_replace(term, "boroughManhattan", "Manhattan"),
+     term = str_replace(term, "boroughQueens", "Queens"),
+     term = str_replace(term, "boroughStaten Island", "Staten Island")) %>% 
+   mutate(
+     term = str_replace(term, "partnertypeCommunity Health Center", "Community Health Center"),
+     term = str_replace(term, "partnertypeCommunity-Based Organization/Non-Profit", "Community-Based Organization/Non-Profit"),
+     term = str_replace(term, "partnertypeEducation", "Education"),
+     term = str_replace(term, "partnertypeFaith-Based Organization", "Faith-Based Organization"),
+     term = str_replace(term, "partnertypeGovernment", "Government"),
+     term = str_replace(term, "partnertypeHospital", "Hospital"),
+     term = str_replace(term, "partnertypePharmacy", "Pharmacy"),
+     term = str_replace(term, "partnertypePrivate Practice", "Private Practice"),
+     term = str_replace(term, "partnertypeSexual Health Clinics (NYC DOHMH)	",
+                        "Sexual Health Clinics (NYC DOHMH)")) %>% 
+   dplyr::select(-c(std_error, statistic)) %>% 
+   knitr::kable(digits = 5)
+```
+
+We can see from our main effects model that venues under the categories: Community Health Center, Community-Based Organization/Non-Profit, Government, Hospital, Pharmacy and Private Practice, are still significant predictors at α = 0.05, however, none of the boroughs are significant predictors of female condom availability.
+
+
+## Logistic Regression Model for Male Condoms  
+
+To begin building our model for male condoms, we took a better look at the distribution of the data and the variables we were interested in.
+
+```{r}
+table1(~ borough + partnertype | condoms_male, 
+       data = factored_data,
+       caption = "Table 1: Distribution of Boroughs and Venue-Related 
+       Covariates by Availability of Male Condoms")
+```
+
+
+From looking at the distribution, there are hardly any boroughs or partner types that don't distribute male condoms. As a result, it isn't likely that any models we build to predict availability of male condoms will have significant predictive ability; but let's take a look anyway. 
+
+### Model 1: Borough 
+
+We will begin with `borough` as a main effect and add other `partnertype` from there.
+
+```{r, message=FALSE}
+logreg_model_male = 
+  glm(condoms_male ~ borough, data = factored_data, family = "binomial")
+
+logreg_model_male %>% 
+  broom::tidy() %>% 
+  janitor::clean_names() %>% 
   mutate(
     term = str_replace(term, "boroughBrooklyn", "Brooklyn"),
     term = str_replace(term, "boroughManhattan", "Manhattan"),
@@ -80,7 +156,12 @@ logreg_model %>%
   knitr::kable(digits = 4)
 ```
 
-### Model 2: Borough + Partnertype  
+As expected, none of the boroughs are significant predictors of female condom availability at α = 0.05.
+
+### Model 2: Borough + Partner Type
+
+To build out our model, we will include the effects of partner types.
+
 ```{r, message=FALSE, warning=FALSE}
 logreg_model2 =
   glm(condoms_male ~ borough + partnertype, data = factored_data, family = "binomial")
@@ -109,5 +190,5 @@ logreg_model2 %>%
   knitr::kable(digits = 4)
 ```
 
-Note above that all of the p-values are greater than 0.05, meaning that none of the predictors are significant.Borough and partner/venue type are not significant predictors of male condom availability. This is not too surprising, considering that all 5 boroughs and most partner types have male_condoms. Logistic regression might not be suitable model for our example. 
+Note above that all of the p-values are greater than 0.05, meaning that none of the predictors are significant. Borough and partner/venue type are not significant predictors of male condom availability. This is not too surprising, considering that we noticed when examining the distribution that all 5 boroughs and most partner types have male condoms. These variables were not suitable for inclusion into a logistic regression model for our question of interest. 
 
