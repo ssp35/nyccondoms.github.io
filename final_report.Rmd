@@ -30,7 +30,10 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Motivation
 
+Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department's NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant, and are distributed at local businesses, community-based organizations and health care facilities.
+
 The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.
+
 
 ## Related Work
 
