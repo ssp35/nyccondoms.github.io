@@ -58,7 +58,7 @@ Link for data: [NYC Condom Availability Program - HIV condom distribution locati
 * `facility_pk` - unique facility identifier  
 * `facilityname` - name of the facility  
 * `partnertype` - the type of organization the venue is  
-* `partner_subtype`  
+* `partner_subtype` - subtype of organization the venue is 
 * `phone`  
 
 **Location**  
