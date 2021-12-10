@@ -25,6 +25,11 @@ $$\\[1.5in]$$
 
 ## Malvika Venkataraman
 
+<image src="images/malvika.jpg" align="right" />
+
+Hi, my name is Malvika Venkataraman, and I am a first-year MS student in the Biostatistics department on the Public Health Data Science Track. My research interests lie within Predictive Modeling/Machine Learning.
+
+Click [here](https://msv2137.github.io/index.html) to learn more about Malvika.
 
 ## Fang (Amy) Liu
 

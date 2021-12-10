@@ -20,10 +20,10 @@ navbar:
   right:
     - icon: fas fa-user-alt
       href: about_us.html
-    - icon: fa-github fa-lg
-      href: https://github.com/ssp35/nyccondoms.github.io.git
     - icon: fab fa-youtube
       href: https://youtube.com
+    - icon: fa-github fa-lg
+      href: https://github.com/ssp35/nyccondoms.github.io.git
       
 output:
   html_document:
