@@ -30,13 +30,13 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Motivation
 
-Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department's NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant, and are distributed at local businesses, community-based organizations and health care facilities.
+Condoms are highly effective in preventing the sexual transmission of HIV and other sexually transmitted infections. Condom distribution is a cost-effective structural intervention that provides communities with the resources needed to prevent the spread of HIV. Making condoms widely available through condom distribution programs is integral to successful HIV prevention. The Health Department's NYC Condom Availability Program gives away more than 30 million free safer sex products every year to over 3,500 locations throughout the five boroughs. These free products include male condoms, female condoms, and lubricant, and are distributed at local businesses, community-based organizations and health care facilities.
 
 The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.
 
 ## Related Work
 
-We all have an interest in sexual health and were looking for a project that could make a difference in the city we live in- NYC. This dataset melded our two interests.
+We all have an interest in sexual health and were looking for a project that could make a difference in the city we live in; NYC. This dataset melded our two interests.
 
 ## Initial Questions
 
@@ -48,11 +48,11 @@ Initially, we were looking to explore the following questions:
 * What is the breakdown of condom distribution per organization type?
 * What is the most popular type of venue from which to distribute condoms?
 
-We also were looking to explore questions related to the day of the week, however we decided not to move forward with this analysis because there was a lot of missing data in the variables.
+We also were looking to explore questions related to hours of operation on each day of the week, however we decided not to move forward with this analysis because there was a lot of missing data in the variables.
 
 Since the venue subtype variable contained information we thought would be valuable, we decided to add the questions, "How does the number of venue subtypes vary per borough?" and "What is the most popular subtype of venue from which to distribute condoms?". We realized the question "What is the breakdown of condom distribution per organization type?" was repetitive, so we removed it. 
 
-The final questions were as follows:
+The final questions we explored were as follows:
 
 * How does the availability of products for females and males vary per type of venue?
 * How does the availability of products for females and males vary per borough?
@@ -121,9 +121,9 @@ To clean the data, we first imported the dataset as a CSV and parsed it. The var
 
 ### Interactive Map
 
-When we first took a look at the data, we were excited about the possibility of utilizing the `latitude` and `longitude` variables to create a map of where free safe sex products are located in NYC. Our goal was to create an interactive tool that would allow users to explore locations by borough and type of safe sex product. 
+When we first took a look at the data, we were excited about the possibility of utilizing the `latitude` and `longitude` variables to create a map of where free safer sex products are located in NYC. Our goal was to create an interactive tool that would allow users to explore locations by borough and type of safer sex product. 
 
-We started off by trying to plot all the products as points in leaflet, but the number of points was overwhelming, and as a result, unreadable. To mitigate this issue, we decided to cluster the markers on the map, so that the number of locations in a particular area was still represented, but visually, the map is more readable. 
+We started off by trying to plot all the products as points in leaflet, but the number of points was overwhelming, and as a result, unreadable. To mitigate this issue, we decided to cluster the markers on the map, so that the number of locations in a particular area was still represented, but more readable. 
 
 ```{r}
 # cluster markers 
@@ -145,7 +145,7 @@ leaflet(cleaned_data_plot) %>%
 
 When looking at all of the marker clusters, we noticed a cluster located in Africa. Since our dataset is specific to NYC, we decided to investigate this. After examining the specific rows, we found out that this was due to "0" values in the `longitude` and `latitude` variables. These were likely missing values, so we filtered out values that were “0” for the purpose of the map.
 
-To make this map as user-friendly as possible, we decided to make the values of  the variables `facilityname`, `partnertype`, `partner_subtype`, `address`, `borough`, `phone`, `condoms_male`, `condoms_female`, and `lubricant`, display when the user clicks on a specific marker. This way the interactive map can be utilized to display all the relevant information needed for a user to find a location that dispenses the free safe sex product(s) they are looking for. In our data cleaning, we had recoded the variables `condoms_male`, `condoms_female`, and `lubricant` to factors with values “0”, and “1.” As a result, “0” and “1” were displaying on the marker. Since this is not user-friendly, for the plot, we recoded the factor values to “No” and “Yes.” 
+To make this map as user-friendly as possible, we decided to make the values of  the variables `facilityname`, `partnertype`, `partner_subtype`, `address`, `borough`, `phone`, `condoms_male`, `condoms_female`, and `lubricant`, display when the user clicks on a specific marker. This way the interactive map can be utilized to display all the relevant information needed for a user to find a location that dispenses the free safer sex product(s) they are looking for. In our data cleaning, we had recoded the variables `condoms_male`, `condoms_female`, and `lubricant` to factors with values “0”, and “1.” As a result, “0” and “1” were displaying on the marker. Since this is not user-friendly, for the plot, we recoded the factor values to “No” and “Yes.” 
 
 ```{r}
 # filtering and factor recoding - cleaning data for the purposes of the plot
@@ -158,12 +158,12 @@ cleaned_data_plot =
     mutate(lubricant = fct_recode(lubricant, "No" = "0", "Yes" = "1"))
 ```
 
-While the leaflet map displayed all of they key information we were looking to represent, our goal was to create a leaflet map in a shiny app, so that the user would be able to filter the map by type of safe sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget, because it allowed the user to select various combinations of safe sex products most easily. 
+While the leaflet map displayed all of they key information we were looking to represent, our goal was to include the map in a shiny app, so that the user would be able to filter the map by type of safer sex product. To do this we explored various widget types, experimenting with select boxes and radio buttons, before eventually deciding on the checkbox group widget, because it allowed the user to select various combinations of safer sex products most easily. 
 
 ```{r}
 # checkbox group inputs within ui variable
 ui <- fluidPage(
-    titlePanel("Where Can I Find Safe Sex Products in NYC?"),
+    titlePanel("Where Can I Find Safer Sex Products in NYC?"),
     tags$head(tags$style(
         type = "text/css",
         "#controlPanel {background-color: rgba(255,255,255,0.8);}",
@@ -204,7 +204,7 @@ Our group had never worked on a collaborative coding project of this extent. A c
 
 #### Data
 
-Although the data was pretty clean, it would’ve been nice if there were more continuous variables, especially for our regression models. 
+Although the data was pretty clean, it would’ve been nice if there were more continuous variables, especially for our regression models. This would've allowed for greater variety in the types of analysis and visualizations we could perform.
 
 ## Conclusions
 
