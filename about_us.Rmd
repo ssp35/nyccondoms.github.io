@@ -5,14 +5,28 @@ output: html_document
 
 ## Daniela Rochez
 
-<image src="images/dani.JPEG" style="width:75%">
+<image src="images/dani.JPEG" align="right" />
 
 Hi! My name is Daniela Rochez, and I am a first-year MS student in the Epidemiology department. My research interests lie within Maternal and Child Health.
 
+Click [here](https://dr3168.github.io/index.html) to learn more about Dani.
+
+$$\\[1.5in]$$
+
 ## Saryu Patel
+
+<image src="images/saryu.jpeg" align="right" />
 
 Hello! My name is Saryu Patel, and I am a first-year MS student studying Biostatistics on the Theory and Methods track. My research interests lie in infectious disease and network analysis.
 
+Click [here](https://ssp35.github.io) to learn more about Saryu.
+
+$$\\[1.5in]$$
+
 ## Malvika Venkataraman
 
+
 ## Fang (Amy) Liu
+
+
+Click [here](https://amyfliu.github.io/amy.github.io/index.html) to learn more about Amy.
