@@ -40,6 +40,20 @@ We all have an interest in sexual health and were looking for a project that cou
 
 ## Initial Questions
 
+Initially, we were looking to explore the following questions:
+
+* How does the number of venue types vary per borough?
+* How does the availability of products for females and males vary per type of venue?
+* How does the availability of products for females and males vary per borough?
+* What is the breakdown of condom distribution per organization type?
+* What is the most popular type of venue from which to distribute condoms?
+
+We also were looking to explore questions related to the day of the week, however we decided not to move forward with this analysis because there was a lot of missing data in the variables.
+
+Since the venue subtype variable contained information we thought would be valuable, we decided to add the questions, "How does the number of venue subtypes vary per borough?" and "What is the most popular subtype of venue from which to distribute condoms?". We realized the question "What is the breakdown of condom distribution per organization type?" was repetitive, so we removed it. 
+
+The final questions were as follows:
+
 * How does the availability of products for females and males vary per type of venue?
 * How does the availability of products for females and males vary per borough?
 * How does the number of venue types vary per borough?
