@@ -37,6 +37,6 @@ $$\\[1.5in]$$
 
 <image src="images/amy.jpg" align="right" />
 
-Hello! My name is Fang (Amy) Liu, and I'm a second-year MPH student in the Department of Biostatistics, with a certificate in Infectious Disease Epidemiology. My interest interests lie within infectious diseases and informatics.
+Hello! My name is Fang (Amy) Liu, and I'm a second-year MPH student in the Department of Biostatistics, with a certificate in Infectious Disease Epidemiology. My research interests lie within infectious diseases and informatics.
 
 Click [here](https://amyfliu.github.io/amy.github.io/index.html) to learn more about Amy.
