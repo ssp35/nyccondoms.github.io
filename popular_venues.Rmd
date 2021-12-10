@@ -7,7 +7,6 @@ output: html_document
 library(tidyverse)
 library(rvest)
 library(httr)
-library(plotly)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -121,7 +120,8 @@ Visually, we can see that there are many more `r pop_subtype$partner_subtype[2]`
 ### Community-Based Organization/Non-Profit
 
 ```{r, message=FALSE}
-cleaned_data %>% 
+cbo =
+  cleaned_data %>% 
   filter(partnertype == "Community-Based Organization/Non-Profit") %>% 
   group_by(partnertype, partner_subtype) %>% 
   summarize(num_subtype = n()) %>% 
@@ -130,7 +130,9 @@ cleaned_data %>%
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %>% 
   arrange(desc(num_subtype)) %>% 
-  head(5) %>% 
+  head(5)
+
+cbo %>% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
@@ -139,12 +141,13 @@ cleaned_data %>%
   ggtitle("Number of Partner Subtypes for CBO/Non-profits")
 ```
 
-The top five Community-Based Organizations/Non-Profits that offer free safer sex products are Other, Social Service, Community Center, Education, and Housing locations.
+The top five Community-Based Organizations/Non-Profits that offer free safer sex products are `r cbo$partner_subtype[1]`, `r cbo$partner_subtype[2]`, `r cbo$partner_subtype[3]`, `r cbo$partner_subtype[4]`, and `r cbo$partner_subtype[5]` locations.
 
 ### Business  
 
 ```{r, message=FALSE}
-cleaned_data %>% 
+bus =
+  cleaned_data %>% 
   filter(partnertype == "Business") %>%
   group_by(partnertype, partner_subtype) %>% 
   summarize(num_subtype = n()) %>% 
@@ -153,7 +156,9 @@ cleaned_data %>%
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %>% 
   arrange(desc(num_subtype)) %>% 
-  head(5) %>% 
+  head(5)
+
+bus %>% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
@@ -162,12 +167,13 @@ cleaned_data %>%
   ggtitle("Number of Partner Subtypes for Businesses")
 ```
 
-The top 5 Businesses that offer free safer sex products are Bar/Lounge, Barbershop, Beauty Salon, Night Club, and Retail Store locations. 
+The top 5 Businesses that offer free safer sex products are `r bus$partner_subtype[1]`, `r bus$partner_subtype[2]`, `r bus$partner_subtype[3]`, `r bus$partner_subtype[4]`, and `r bus$partner_subtype[5]` locations. 
 
 ### Community Health Centers
 
 ```{r, message=FALSE}
-cleaned_data %>% 
+chc =
+  cleaned_data %>% 
   filter(partnertype == "Community Health Center") %>% 
   group_by(partnertype, partner_subtype) %>% 
   summarize(num_subtype = n()) %>% 
@@ -175,6 +181,9 @@ cleaned_data %>%
     partner_subtype = as.factor(partner_subtype),
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %>% 
+  arrange(desc(num_subtype))
+
+chc %>% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = "identity",  position = "dodge") +
   labs(
@@ -183,6 +192,6 @@ cleaned_data %>%
   ggtitle("Number of Partner Subtypes for Community Health Centers")
 ``` 
 
-There are only three Community Health Center venue subtypes: Other, Clinical Facility, and Women's Center locations. 
+There are only three Community Health Center venue subtypes: `r chc$partner_subtype[1]`, `r chc$partner_subtype[2]`, and `r chc$partner_subtype[3]` locations. 
 
 

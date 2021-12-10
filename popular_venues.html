@@ -413,11 +413,11 @@ pop_venue %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">Community-Based Organization/Non-Profit</td>
-<td align="right">281</td>
+<td align="right">282</td>
 </tr>
 <tr class="even">
 <td align="left">Business</td>
-<td align="right">212</td>
+<td align="right">213</td>
 </tr>
 <tr class="odd">
 <td align="left">Community Health Center</td>
@@ -509,11 +509,11 @@ pop_subtype %&gt;%
 <td align="right">27</td>
 </tr>
 <tr class="even">
-<td align="left">Physician</td>
-<td align="right">18</td>
+<td align="left">Social Service</td>
+<td align="right">19</td>
 </tr>
 <tr class="odd">
-<td align="left">Social Service</td>
+<td align="left">Physician</td>
 <td align="right">18</td>
 </tr>
 <tr class="even">
@@ -525,7 +525,7 @@ pop_subtype %&gt;%
 <td align="right">10</td>
 </tr>
 <tr class="even">
-<td align="left">Retail Store</td>
+<td align="left">Restaurant</td>
 <td align="right">7</td>
 </tr>
 </tbody>
@@ -548,7 +548,8 @@ pop_subtype %&gt;%
 <h2>Top Venues and their Subtypes</h2>
 <div id="community-based-organizationnon-profit" class="section level3">
 <h3>Community-Based Organization/Non-Profit</h3>
-<pre class="r"><code>cleaned_data %&gt;% 
+<pre class="r"><code>cbo =
+  cleaned_data %&gt;% 
   filter(partnertype == &quot;Community-Based Organization/Non-Profit&quot;) %&gt;% 
   group_by(partnertype, partner_subtype) %&gt;% 
   summarize(num_subtype = n()) %&gt;% 
@@ -557,7 +558,9 @@ pop_subtype %&gt;%
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %&gt;% 
   arrange(desc(num_subtype)) %&gt;% 
-  head(5) %&gt;% 
+  head(5)
+
+cbo %&gt;% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
@@ -569,7 +572,8 @@ pop_subtype %&gt;%
 </div>
 <div id="business" class="section level3">
 <h3>Business</h3>
-<pre class="r"><code>cleaned_data %&gt;% 
+<pre class="r"><code>bus =
+  cleaned_data %&gt;% 
   filter(partnertype == &quot;Business&quot;) %&gt;%
   group_by(partnertype, partner_subtype) %&gt;% 
   summarize(num_subtype = n()) %&gt;% 
@@ -578,7 +582,9 @@ pop_subtype %&gt;%
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %&gt;% 
   arrange(desc(num_subtype)) %&gt;% 
-  head(5) %&gt;% 
+  head(5)
+
+bus %&gt;% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
@@ -586,11 +592,12 @@ pop_subtype %&gt;%
     y = &quot;Number of Locations&quot;) + 
   ggtitle(&quot;Number of Partner Subtypes for Businesses&quot;)</code></pre>
 <p><img src="popular_venues_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
-<p>The top 5 Businesses that offer free safer sex products are Bar/Lounge, Barbershop, Beauty Salon, Night Club, and Retail Store locations.</p>
+<p>The top 5 Businesses that offer free safer sex products are Bar/Lounge, Barbershop, Beauty Salon, Night Club, and Restaurant locations.</p>
 </div>
 <div id="community-health-centers" class="section level3">
 <h3>Community Health Centers</h3>
-<pre class="r"><code>cleaned_data %&gt;% 
+<pre class="r"><code>chc =
+  cleaned_data %&gt;% 
   filter(partnertype == &quot;Community Health Center&quot;) %&gt;% 
   group_by(partnertype, partner_subtype) %&gt;% 
   summarize(num_subtype = n()) %&gt;% 
@@ -598,6 +605,9 @@ pop_subtype %&gt;%
     partner_subtype = as.factor(partner_subtype),
     partner_subtype = fct_reorder(partner_subtype, num_subtype, .desc = TRUE)
   ) %&gt;% 
+  arrange(desc(num_subtype))
+
+chc %&gt;% 
   ggplot(aes(x = partnertype, y = num_subtype, fill = partner_subtype)) +
   geom_bar(stat = &quot;identity&quot;,  position = &quot;dodge&quot;) +
   labs(
