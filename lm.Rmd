@@ -58,10 +58,10 @@ table1(~ borough + partnertype | condoms_female,
        Covariates by Availability of Female Condoms")
 ```
 
-
 From looking at the distribution, it seems `partnertype` may be an important predictor of female condom availability, so we will begin with that as a main effect and add other `borough` from there.
 
 ### Model 1: Partner Type 
+
 ```{r, message=FALSE}
 logreg_model = 
   glm(condoms_female ~ partnertype, data = factored_data, family = "binomial")
@@ -99,8 +99,8 @@ To build out our model, we will include the effects of boroughs.
 female_condom_logistic =
   glm(condoms_female ~ borough + partnertype, data = factored_data, family = binomial())
 
-
- female_condom_logistic %>% 
+fem_log_sum =
+  female_condom_logistic %>% 
    broom::tidy() %>% 
    janitor::clean_names() %>%
      mutate(
@@ -117,10 +117,13 @@ female_condom_logistic =
      term = str_replace(term, "partnertypeHospital", "Hospital"),
      term = str_replace(term, "partnertypePharmacy", "Pharmacy"),
      term = str_replace(term, "partnertypePrivate Practice", "Private Practice"),
-     term = str_replace(term, "partnertypeSexual Health Clinics (NYC DOHMH)	",
-                        "Sexual Health Clinics (NYC DOHMH)")) %>% 
-   dplyr::select(-c(std_error, statistic)) %>% 
-   knitr::kable(digits = 5)
+     ) 
+
+fem_log_sum$term[fem_log_sum$term == "partnertypeSexual Health Clinics (NYC DOHMH)"] = "Sexual Health Clinics (NYC DOHMH)"
+
+fem_log_sum %>% 
+  dplyr::select(-c(std_error, statistic)) %>% 
+  knitr::kable(digits = 5)
 ```
 
 We can see from our main effects model that venues under the categories: Community Health Center, Community-Based Organization/Non-Profit, Government, Hospital, Pharmacy and Private Practice, are still significant predictors at α = 0.05, however, none of the boroughs are significant predictors of female condom availability.
@@ -138,7 +141,7 @@ table1(~ borough + partnertype | condoms_male,
 ```
 
 
-From looking at the distribution, there are hardly any boroughs or partner types that don't distribute male condoms. As a result, it isn't likely that any models we build to predict availability of male condoms will have significant predictive ability; but let's take a look anyway. 
+From looking at the distribution, there are hardly any boroughs or partner types that don't distribute male condoms. As a result, it isn't likely that any models we build to predict availability of male condoms will have significant predictive ability, but let's take a look anyway. 
 
 ### Model 1: Borough 
 
@@ -170,7 +173,8 @@ To build out our model, we will include the effects of partner types.
 logreg_model2 =
   glm(condoms_male ~ borough + partnertype, data = factored_data, family = "binomial")
 
-logreg_model2 %>% 
+log_sum2 =
+  logreg_model2 %>% 
   broom::tidy() %>% 
   janitor::clean_names() %>%
   mutate(
@@ -186,13 +190,14 @@ logreg_model2 %>%
     term = str_replace(term, "partnertypeGovernment", "Government"),
     term = str_replace(term, "partnertypeHospital", "Hospital"),
     term = str_replace(term, "partnertypePharmacy", "Pharmacy"),
-    term = str_replace(term, "partnertypePrivate Practice", "Private Practice"),
-    term = str_replace(term, "partnertypeSexual Health Clinics (NYC DOHMH)",
-                       "Sexual Health Clinics (NYC DOHMH)")
-    ) %>% 
+    term = str_replace(term, "partnertypePrivate Practice", "Private Practice")
+    )
+
+log_sum2$term[log_sum2$term == "partnertypeSexual Health Clinics (NYC DOHMH)"] = "Sexual Health Clinics (NYC DOHMH)"
+
+log_sum2 %>% 
   dplyr::select(-c(std_error, statistic)) %>% 
   knitr::kable(digits = 4)
 ```
 
-Note above that all of the p-values are greater than 0.05, meaning that none of the predictors are significant. Borough and partner/venue type are not significant predictors of male condom availability. This is not too surprising, considering that we noticed when examining the distribution that all 5 boroughs and most partner types have male condoms. These variables were not suitable for inclusion into a logistic regression model for our question of interest. 
-
+Note that all of the above p-values are greater than 0.05, meaning that none of the predictors are significant. Borough and partner/venue type are not significant predictors of male condom availability. This is not too surprising, considering that we noticed when examining the distribution that all 5 boroughs and most partner types have male condoms. These variables were not suitable for inclusion in a logistic regression model for our question of interest. 
