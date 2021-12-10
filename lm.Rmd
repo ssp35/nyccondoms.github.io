@@ -3,19 +3,22 @@ title: "Statistical Analysis"
 output: html_document
 ---
 
-
-```{r, message=FALSE}
+```{r, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(rvest)
 library(httr)
 library(table1)
 ```
 
+<<<<<<< HEAD
 # Logistic Regression 
 
 Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We evaluated the inclusion of `borough`, `partnertype` in the models to see if these variables were significant in predicting the availability of a condom.
 
 ```{r, message=FALSE}
+=======
+```{r, message=FALSE, echo=FALSE}
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 condom_data = 
   GET("https://data.cityofnewyork.us/resource/4kpn-sezh.csv") %>% 
   content("parsed")

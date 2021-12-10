@@ -393,6 +393,7 @@ div.tocify {
 </div>
 
 
+<<<<<<< HEAD
 <pre class="r"><code>library(tidyverse)
 library(rvest)
 library(httr)
@@ -430,6 +431,8 @@ cleaned_data %&gt;%
     partnertype = factor(partnertype),
     partner_subtype = factor(partner_subtype)
   )</code></pre>
+=======
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 <div id="logistic-regression-model-for-female-condoms" class="section level2">
 <h2>Logistic Regression Model for Female Condoms</h2>
 <p>To begin building our model for female condoms, we took a better look at the distribution of the data and the variables we were interested in.</p>
@@ -839,6 +842,7 @@ logreg_model %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
+<<<<<<< HEAD
 <td align="right">-1.18173</td>
 <td align="right">0.00000</td>
 </tr>
@@ -886,6 +890,55 @@ logreg_model %&gt;%
 <td align="left">partnertypeSexual Health Clinics (NYC DOHMH)</td>
 <td align="right">1.18173</td>
 <td align="right">0.40643</td>
+=======
+<td align="right">-21.4522</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">boroughBrooklyn</td>
+<td align="right">-0.1139</td>
+<td align="right">0.8218</td>
+</tr>
+<tr class="odd">
+<td align="left">boroughManhattan</td>
+<td align="right">0.2851</td>
+<td align="right">0.5616</td>
+</tr>
+<tr class="even">
+<td align="left">boroughQueens</td>
+<td align="right">0.0421</td>
+<td align="right">0.9346</td>
+</tr>
+<tr class="odd">
+<td align="left">boroughStaten Island</td>
+<td align="right">-0.9677</td>
+<td align="right">0.3975</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeCommunity Health Center</td>
+<td align="right">21.2834</td>
+<td align="right">0.9881</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypeCommunity-Based Organization/Non-Profit</td>
+<td align="right">37.6321</td>
+<td align="right">0.9856</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeEducation</td>
+<td align="right">-0.3990</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypeFaith-Based Organization</td>
+<td align="right">-19.4946</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeGovernment</td>
+<td align="right">39.1258</td>
+<td align="right">0.9850</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 </tbody>
 </table>
@@ -936,6 +989,7 @@ female_condom_logistic =
 </thead>
 <tbody>
 <tr class="odd">
+<<<<<<< HEAD
 <td align="left">(Intercept)</td>
 <td align="right">-21.45219</td>
 <td align="right">0.99941</td>
@@ -1044,6 +1098,66 @@ female_condom_logistic =
 <td align="left">partner_subtypeClinical Facility</td>
 <td align="right">1.09890</td>
 <td align="right">0.99997</td>
+=======
+<td align="left">partnertypeHospital</td>
+<td align="right">20.8481</td>
+<td align="right">0.9883</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypePharmacy</td>
+<td align="right">2.5923</td>
+<td align="right">0.0784</td>
+</tr>
+<tr class="odd">
+<td align="left">partnertypePrivate Practice</td>
+<td align="right">1.1502</td>
+<td align="right">0.4823</td>
+</tr>
+<tr class="even">
+<td align="left">partnertypeSexual Health Clinics (NYC DOHMH)</td>
+<td align="right">20.0682</td>
+<td align="right">0.9888</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBar/Lounge</td>
+<td align="right">19.7690</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeBarbershop</td>
+<td align="right">19.7752</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBeauty Salon</td>
+<td align="right">20.7196</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeBodega/Deli/Mini Market</td>
+<td align="right">-0.3990</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeBook Store</td>
+<td align="right">42.7332</td>
+<td align="right">0.9992</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeCafé</td>
+<td align="right">21.1671</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeChristian Organization</td>
+<td align="right">62.2278</td>
+<td align="right">0.9989</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeClinical Facility</td>
+<td align="right">1.0989</td>
+<td align="right">1.0000</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 <tr class="odd">
 <td align="left">partner_subtypeCollege/University</td>
@@ -1052,6 +1166,7 @@ female_condom_logistic =
 </tr>
 <tr class="even">
 <td align="left">partner_subtypeCommunity Center</td>
+<<<<<<< HEAD
 <td align="right">-16.60990</td>
 <td align="right">0.99955</td>
 </tr>
@@ -1074,6 +1189,30 @@ female_condom_logistic =
 <td align="left">partner_subtypeGym/Health Club</td>
 <td align="right">42.97619</td>
 <td align="right">0.99917</td>
+=======
+<td align="right">-16.6099</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeEducation</td>
+<td align="right">5.3644</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeElected Official</td>
+<td align="right">3.6074</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeGovernment Agency</td>
+<td align="right">3.8375</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeGym/Health Club</td>
+<td align="right">42.9762</td>
+<td align="right">0.9992</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 <tr class="odd">
 <td align="left">partner_subtypeHotel/Motel/Lodge/B&amp;B</td>
@@ -1082,6 +1221,7 @@ female_condom_logistic =
 </tr>
 <tr class="even">
 <td align="left">partner_subtypeHousing</td>
+<<<<<<< HEAD
 <td align="right">-15.48676</td>
 <td align="right">0.99958</td>
 </tr>
@@ -1129,6 +1269,55 @@ female_condom_logistic =
 <td align="left">partner_subtypeOB / OB-GYN</td>
 <td align="right">41.86806</td>
 <td align="right">0.99919</td>
+=======
+<td align="right">-15.4868</td>
+<td align="right">0.9996</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeLaundromat</td>
+<td align="right">-0.2642</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeLegal Service</td>
+<td align="right">5.5000</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeLiquor Store</td>
+<td align="right">-0.1139</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeMen’s Spa</td>
+<td align="right">-0.3990</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeMuseum</td>
+<td align="right">-0.3990</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeNight Club</td>
+<td align="right">19.9364</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeNone</td>
+<td align="right">38.4689</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeNYC Council Member Office</td>
+<td align="right">3.6074</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeOB / OB-GYN</td>
+<td align="right">41.8681</td>
+<td align="right">0.9992</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 <tr class="even">
 <td align="left">partner_subtypeOffice</td>
@@ -1137,6 +1326,7 @@ female_condom_logistic =
 </tr>
 <tr class="odd">
 <td align="left">partner_subtypeOther</td>
+<<<<<<< HEAD
 <td align="right">20.02859</td>
 <td align="right">0.99945</td>
 </tr>
@@ -1169,6 +1359,40 @@ female_condom_logistic =
 <td align="left">partner_subtypeSocial Service</td>
 <td align="right">-14.51346</td>
 <td align="right">0.99960</td>
+=======
+<td align="right">20.0286</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypePharmacy</td>
+<td align="right">42.8835</td>
+<td align="right">0.9990</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypePhysician</td>
+<td align="right">21.0649</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeRestaurant</td>
+<td align="right">20.4339</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeRetail Store</td>
+<td align="right">22.2493</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeSex Store</td>
+<td align="right">21.1671</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeSocial Service</td>
+<td align="right">-14.5135</td>
+<td align="right">0.9996</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 <tr class="even">
 <td align="left">partner_subtypeStudent Housing</td>
@@ -1177,6 +1401,7 @@ female_condom_logistic =
 </tr>
 <tr class="odd">
 <td align="left">partner_subtypeTattoo Parlor</td>
+<<<<<<< HEAD
 <td align="right">19.66498</td>
 <td align="right">0.99946</td>
 </tr>
@@ -1204,6 +1429,35 @@ female_condom_logistic =
 <td align="left">partner_subtypeYouth Center</td>
 <td align="right">-16.34348</td>
 <td align="right">0.99956</td>
+=======
+<td align="right">19.6650</td>
+<td align="right">0.9995</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeTaxi/Car Service</td>
+<td align="right">20.8201</td>
+<td align="right">0.9994</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeTheater</td>
+<td align="right">-0.3990</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeWomen’s Center</td>
+<td align="right">0.2257</td>
+<td align="right">1.0000</td>
+</tr>
+<tr class="odd">
+<td align="left">partner_subtypeYMCA/JCC</td>
+<td align="right">5.3441</td>
+<td align="right">0.9999</td>
+</tr>
+<tr class="even">
+<td align="left">partner_subtypeYouth Center</td>
+<td align="right">-16.3435</td>
+<td align="right">0.9996</td>
+>>>>>>> dfbf1cd5a4a5f094636d6408fd9b678d5a374546
 </tr>
 </tbody>
 </table>

@@ -194,7 +194,7 @@ Click [here](popular_venues.html) to learn more about which types of venues have
 
 ## Additional Analyses
 
-Because we were interested in the binary outcome of whether a condom was available or not, we decided to analyze the data using two logistic regression models. One model predicted the availability of male condoms and the other predicted the availability of female condoms. We included `borough`, `partnertype`, and `partner_subtype` in the model to see if these variables were significant in predicting the availability of a condom. Our models and conclusions are available [here](lm.html).
+Click [here](lm.html) to see if we were able to predict condom availability.
 
 ## Discussion
 
