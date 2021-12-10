@@ -34,8 +34,9 @@ Condoms are highly effective in preventing the sexual transmission of HIV and 
 
 The motivation for this project is to explore the distribution of free condoms across different areas in NYC. We want to determine areas of the city where more free condoms can be distributed, and ensure that equal amounts are being distributed for both females and males. We also would like to explore whether certain types of venues have made more of an effort to distribute free condoms than others.
 
-
 ## Related Work
+
+We all have an interest in sexual health and were looking for a project that could make a difference in the city we live in- NYC. This dataset melded our two interests.
 
 ## Initial Questions
 
