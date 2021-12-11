@@ -40,6 +40,9 @@ names(r_colors) <- colors()
 
 ui <- fluidPage(
     titlePanel("Where Can I Find Safe Sex Products in NYC?"),
+    mainPanel(
+        h4("Instructions"),
+        h6("To use the map, select the checkboxes corresponding to the type of safer sex product you are looking for. If you aren’t interested in a particular product or products, select both “Yes” and “No.” For example, if you are specifically looking for locations that carry female condoms and lubricant, select “Yes” for both female condoms and lubricant, and select both “Yes” and “No” for male condoms. Click on the marker clusters and markers to explore the various locations and their corresponding information.")),
     tags$head(tags$style(
         type = "text/css",
         "#controlPanel {background-color: rgba(255,255,255,0.8);}",
