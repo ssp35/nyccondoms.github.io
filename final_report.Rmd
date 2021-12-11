@@ -63,7 +63,7 @@ The final questions we explored were as follows:
 
 We used data from the NYC condom availability program for our analysis. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products. The dataset can be downloaded directly or accessed by using NYC OpenData's API, in `JSON` or `CSV` formats. For our project, we accessed the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data is updated regularly.  
 
-Link for data: [NYC Condom Availability Program - HIV condom distribution locations](www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh) 
+Link for data: [NYC Condom Availability Program - HIV condom distribution locations](https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh) 
 
 ### Variables of interest
 **Facility**  

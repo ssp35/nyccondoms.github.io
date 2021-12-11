@@ -396,7 +396,6 @@ div.tocify {
 
 <div id="nyc-condom-distribution" class="section level1">
 <h1>NYC Condom Distribution</h1>
-<p>Load required libraries and setup.</p>
 <pre class="r"><code>library(tidyverse)
 library(rvest)
 library(httr)
@@ -447,7 +446,7 @@ scale_fill_discrete = scale_fill_viridis_d</code></pre>
 <div id="data" class="section level2">
 <h2>Data</h2>
 <p>We used data from the NYC condom availability program for our analysis. The data is publicly accessible and is refreshed on a daily basis. In short, the program maintains a list of active venues across the five boroughs of NYC that offers free safer sex products; this list is updated with support from the NYC Department of Health and Mental Hygiene. Each row of the dataset represents pertinent information related to a single venue which distributes NYC safer sex products. The dataset can be downloaded directly or accessed by using NYC OpenData’s API, in <code>JSON</code> or <code>CSV</code> formats. For our project, we accessed the data directly using the API to improve reproducibility and make it easier to update results to reflect new data, since the data is updated regularly.</p>
-<p>Link for data: <a href="www.https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh">NYC Condom Availability Program - HIV condom distribution locations</a></p>
+<p>Link for data: <a href="https://data.cityofnewyork.us/Health/NYC-Condom-Availability-Program-HIV-condom-distrib/4kpn-sezh">NYC Condom Availability Program - HIV condom distribution locations</a></p>
 <div id="variables-of-interest" class="section level3">
 <h3>Variables of interest</h3>
 <p><strong>Facility</strong><br />
