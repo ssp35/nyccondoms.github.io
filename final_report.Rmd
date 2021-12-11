@@ -7,8 +7,6 @@ output:
 
 # NYC Condom Distribution
 
-Load required libraries and setup.
-
 ```{r, message=FALSE}
 library(tidyverse)
 library(rvest)
