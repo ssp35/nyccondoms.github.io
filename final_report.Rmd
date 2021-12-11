@@ -200,7 +200,7 @@ Click [here](lm.html) to see if we were able to predict condom availability.
 
 #### R programming
 
-Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. 
+Coding errors can sometimes feel like looking for a needle in a haystack. Throughout our project we did encounter some minor issues with code, inability to knit, and lack of knowledge in some areas of R that we incorporated in our analysis. Particularly, the intricacies of R Shiny. One other specific issue we encountered was in replacing `partnertypeSexual Health Clinics (NYC DOHMH)` with `Sexual Health Clinics (NYC DOHMH)` using `str_replace` in the logistic regression results, even though the function worked for all other terms. To fix this issue, we added the line, `log_sum$term[log_sum$term == "partnertypeSexual Health Clinics (NYC DOHMH)"] = "Sexual Health Clinics (NYC DOHMH)"`, which did work.
 
 #### Collaborative Coding
 
@@ -212,11 +212,11 @@ Although the data was pretty clean, it would have been nice if there were more c
 
 ## Conclusions
 
-From our logistic regression models, we were able to conclude that boroughs and venue types are not significant predictors of male condom availability. This is because most locations have male condoms. Venues under the categories: Community Health Center, Community-Based Organization/Non-Profit, Government, Hospital, Pharmacy and Private Practice, are significant predictors of female condom availability.
+From our logistic regression models, we were able to conclude that boroughs and venue types are not significant predictors of male condom availability. This is because most locations have male condoms. Venues under the categories, Community Health Center, Community-Based Organization/Non-Profit, Government, Hospital, Pharmacy and Private Practice, are significant predictors of female condom availability.
 
-Based on our exploration of male vs. female condom availability, male condoms are much more readily available. There needs to be a greater distribution of female condoms in the city.
+Based on our exploration of male vs. female condom availability, male condoms are much more readily available, so there needs to be a greater effort in the distribution of female condoms in the city.
 
-Overall, the most popular types of venues that distribute condoms were Community-Based Organizations/Non-Profits and Businesses. We found it really surprising that Sexual Health Clinics only have 2 distribution locations, and recommend that a greater number distribute free safer sex products.
+Overall, the most popular types of venues that distribute condoms are Community-Based Organizations/Non-Profits and Businesses. We found it really surprising that Sexual Health Clinics only have 2 distribution locations and recommend that a greater number of these clinics distribute free safer sex products.
 
-Over 2/3 of the total number of venues were in Manhattan and Brooklyn alone. Considering that Queens has the second largest population of the boroughs, we found it surprising that only 17% of the venues were located there. We recommend the condom distribution program to increase its presence in Queens.
+Over 2/3 of the total number of venues were in Manhattan and Brooklyn alone. Considering that Queens has the second largest population of the boroughs, we found it surprising that only 17% of the venues are located there. We recommend the condom distribution program to increase its presence in Queens.
 
