@@ -58,7 +58,7 @@ table1(~ borough + partnertype | condoms_female,
        Covariates by Availability of Female Condoms")
 ```
 
-From looking at the distribution, it seems `partnertype` may be an important predictor of female condom availability, so we will begin with that as a main effect and add other `borough` from there.
+From looking at the distribution, it seems `partnertype` may be an important predictor of female condom availability, so we will begin with that as a main effect and add `borough` from there.
 
 ### Model 1: Partner Type 
 
@@ -145,7 +145,7 @@ From looking at the distribution, there are hardly any boroughs or partner types
 
 ### Model 1: Borough 
 
-We will begin with `borough` as a main effect and add other `partnertype` from there.
+We will begin with `borough` as a main effect and add `partnertype` from there.
 
 ```{r, message=FALSE}
 logreg_model_male = 

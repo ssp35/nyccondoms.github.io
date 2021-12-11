@@ -550,7 +550,7 @@ cleaned_data %&gt;%
 </tbody>
 </table>
 </div>
-<p>From looking at the distribution, it seems <code>partnertype</code> may be an important predictor of female condom availability, so we will begin with that as a main effect and add other <code>borough</code> from there.</p>
+<p>From looking at the distribution, it seems <code>partnertype</code> may be an important predictor of female condom availability, so we will begin with that as a main effect and add <code>borough</code> from there.</p>
 <div id="model-1-partner-type" class="section level3">
 <h3>Model 1: Partner Type</h3>
 <pre class="r"><code>logreg_model = 
@@ -882,7 +882,7 @@ fem_log_sum %&gt;%
 <p>From looking at the distribution, there are hardly any boroughs or partner types that don’t distribute male condoms. As a result, it isn’t likely that any models we build to predict availability of male condoms will have significant predictive ability, but let’s take a look anyway.</p>
 <div id="model-1-borough" class="section level3">
 <h3>Model 1: Borough</h3>
-<p>We will begin with <code>borough</code> as a main effect and add other <code>partnertype</code> from there.</p>
+<p>We will begin with <code>borough</code> as a main effect and add <code>partnertype</code> from there.</p>
 <pre class="r"><code>logreg_model_male = 
   glm(condoms_male ~ borough, data = factored_data, family = &quot;binomial&quot;)
 
